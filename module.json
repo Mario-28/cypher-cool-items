@@ -1,0 +1,30 @@
+{
+  "id": "cypher-cool-items",
+  "title": "Cypher Cool Items",
+  "description": "Complete visual rework of Cypher System item sheets with dark fantasy styling and enhanced item properties.",
+  "version": "1.4.5",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14.360"
+  },
+  "authors": [
+    {
+      "name": "MoonRakeR",
+      "flags": {}
+    }
+  ],
+  "systems": ["cyphersystem"],
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/cool-items.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "socket": false,
+  "url": "",
+  "manifest": "",
+  "download": ""
+}
