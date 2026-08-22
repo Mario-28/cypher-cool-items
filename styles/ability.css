@@ -1,0 +1,857 @@
+/* ============================================
+   ABILITY PANEL — Blue Theme
+   ============================================ */
+.cci-ability-panel {
+  --cci-bg: #0a1628;
+  --cci-bg-light: #111d35;
+  --cci-accent: #3b82f6;
+  --cci-accent-dim: rgba(59, 130, 246, 0.25);
+  --cci-gold: #60a5fa;
+  --cci-gold-dim: rgba(96, 165, 250, 0.2);
+}
+
+/* Blue-tinted background layer */
+.cci-ability-panel .cci-bg-image {
+  opacity: 0.12;
+}
+
+/* Name — blue underline */
+.cci-ability-panel .cci-name-input,
+.cci-ability-panel .cci-name-display {
+  border-bottom-color: #3b82f6 !important;
+  color: #60a5fa !important;
+}
+.cci-ability-panel .cci-name-input:focus {
+  border-bottom-color: #60a5fa !important;
+}
+.cci-ability-panel .cci-name-input::placeholder {
+  color: rgba(96, 165, 250, 0.3) !important;
+}
+
+/* Image glow — blue */
+.cci-ability-panel .cci-image-glow {
+  background: rgba(59, 130, 246, 0.25);
+}
+.cci-ability-panel .cci-image-ring {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Inputs & selects — blue border/focus */
+.cci-ability-panel .cci-field-pair input,
+.cci-ability-panel .cci-field-pair select,
+.cci-ability-panel .cci-stat input,
+.cci-ability-panel .cci-stat select {
+  border-color: rgba(59, 130, 246, 0.2) !important;
+}
+.cci-ability-panel .cci-field-pair input:focus,
+.cci-ability-panel .cci-field-pair select:focus,
+.cci-ability-panel .cci-stat input:focus,
+.cci-ability-panel .cci-stat select:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Dropdown arrow — blue */
+.cci-ability-panel .cci-field-pair select,
+.cci-ability-panel .cci-stat select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%233b82f6' fill-opacity='0.7' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 6px center !important;
+  padding-right: 20px !important;
+}
+
+/* Mid-row — blue tint */
+.cci-ability-panel .cci-mid-row {
+  background: rgba(59, 130, 246, 0.06);
+  border-color: rgba(59, 130, 246, 0.15);
+}
+
+/* WYSIWYG toolbar — blue accents */
+.cci-ability-panel .cci-wysiwyg-toolbar button:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+  color: #60a5fa;
+}
+.cci-ability-panel .cci-wysiwyg:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.15);
+}
+
+/* Flavor row — blue */
+.cci-ability-panel .cci-flavor-text {
+  background: rgba(59, 130, 246, 0.05);
+  border-color: rgba(96, 165, 250, 0.15);
+}
+.cci-ability-panel .cci-flavor-label {
+  color: #60a5fa;
+}
+
+/* Scrollbar — blue */
+.app.sheet.item:has(.cci-ability-panel) ::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+}
+.app.sheet.item:has(.cci-ability-panel) ::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
+
+.cci-ability-panel .cci-top-row {
+  grid-template-columns: 90px 1fr;
+}
+.cci-ability-panel .cci-info-fields {
+  grid-template-columns: 1fr 1fr;
+}
+.cci-duration-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.cci-duration-row input.cci-duration-value {
+  width: 60px !important;
+  flex-shrink: 0 !important;
+  text-align: center !important;
+}
+.cci-duration-row select {
+  flex: 1 !important;
+}
+
+/* Ability panel: pool cost row */
+.cci-poolcost-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.cci-poolcost-row select {
+  flex: 1 !important;
+}
+.cci-poolcost-row input.cci-poolcost-value {
+  width: 60px !important;
+  flex-shrink: 0 !important;
+  text-align: center !important;
+}
+
+/* Ability panel: white text on number inputs */
+.cci-ability-panel input[type="number"] {
+  color: #ffffff !important;
+}
+
+/* Ability panel: dark background on ALL dropdowns */
+.cci-ability-panel select {
+  background-color: var(--cci-input-bg) !important;
+  background-repeat: no-repeat !important;
+  border: 1px solid var(--cci-border) !important;
+  border-radius: 6px !important;
+  color: var(--cci-text) !important;
+  font-size: 0.85em !important;
+  padding: 5px 8px !important;
+  height: 32px !important;
+  line-height: 22px !important;
+  box-sizing: border-box !important;
+}
+
+/* Ability panel: dark background + white text on dropdown OPTIONS */
+.cci-ability-panel select option,
+.cci-ability-panel select optgroup {
+  background: #1a1f35 !important;
+  color: #e0e8f0 !important;
+}
+
+/* ============================================
+   ABILITY MODE CHECKBOXES
+   ============================================ */
+.cci-mode-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cci-mode-label {
+  font-size: 0.65em;
+  font-weight: 600;
+  color: var(--cci-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cci-mode-checkboxes {
+  display: flex;
+  gap: 8px;
+}
+
+.cci-mode-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  user-select: none;
+}
+
+.cci-mode-checkbox:hover {
+  background: rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.cci-mode-checkbox input[type="checkbox"] {
+  display: none !important;
+}
+
+.cci-mode-checkbox .cci-mode-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.cci-mode-checkbox .cci-mode-attack {
+  color: #ef4444;
+}
+
+.cci-mode-checkbox .cci-mode-defense {
+  color: #3b82f6;
+}
+
+.cci-mode-checkbox .cci-mode-utility {
+  color: #eab308;
+}
+
+.cci-mode-checkbox .cci-mode-text {
+  font-size: 0.8em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s ease;
+}
+
+/* Active states */
+.cci-mode-checkbox.cci-mode-active {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.cci-mode-checkbox.cci-mode-active[data-mode="attack"] {
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.08);
+}
+
+.cci-mode-checkbox.cci-mode-active[data-mode="attack"] .cci-mode-icon {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.cci-mode-checkbox.cci-mode-active[data-mode="attack"] .cci-mode-text {
+  color: #ef4444;
+}
+
+.cci-mode-checkbox.cci-mode-active[data-mode="defense"] {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.08);
+}
+
+.cci-mode-checkbox.cci-mode-active[data-mode="defense"] .cci-mode-icon {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.cci-mode-checkbox.cci-mode-active[data-mode="defense"] .cci-mode-text {
+  color: #3b82f6;
+}
+
+.cci-mode-checkbox.cci-mode-active[data-mode="utility"] {
+  border-color: rgba(234, 179, 8, 0.4);
+  box-shadow: 0 0 12px rgba(234, 179, 8, 0.08);
+}
+
+.cci-mode-checkbox.cci-mode-active[data-mode="utility"] .cci-mode-icon {
+  background: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+}
+
+.cci-mode-checkbox.cci-mode-active[data-mode="utility"] .cci-mode-text {
+  color: #eab308;
+}
+
+/* Disabled state for players */
+.cci-player-view .cci-mode-checkbox {
+  cursor: default;
+  opacity: 0.7;
+}
+
+/* ============================================
+   ATTACK SECTION
+   ============================================ */
+.cci-attack-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(239, 68, 68, 0.03);
+  border: 1px solid rgba(239, 68, 68, 0.12);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.cci-attack-header {
+  color: #ef4444 !important;
+  border-bottom-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.cci-attack-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cci-attack-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cci-attack-field label {
+  font-size: 0.6em !important;
+  font-weight: 600 !important;
+  color: rgba(239, 68, 68, 0.7) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.cci-attack-field input,
+.cci-attack-field select,
+.cci-attack-field .cci-readonly {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  border-radius: 6px !important;
+  color: #e0e0e0 !important;
+  font-size: 0.85em !important;
+  padding: 5px 8px !important;
+  height: 32px !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.cci-attack-field input::placeholder {
+  color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.cci-attack-field input:focus,
+.cci-attack-field select:focus {
+  border-color: #ef4444 !important;
+  outline: none !important;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.15) !important;
+}
+
+.cci-attack-field .cci-readonly {
+  display: flex;
+  align-items: center;
+}
+
+/* Ammo row */
+.cci-attack-ammo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(239, 68, 68, 0.1);
+}
+
+.cci-ammo-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cci-ammo-toggle input[type="checkbox"] {
+  display: none !important;
+}
+
+.cci-ammo-toggle-track {
+  width: 36px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.cci-ammo-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.cci-ammo-toggle input:checked + .cci-ammo-toggle-track {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.cci-ammo-toggle input:checked + .cci-ammo-toggle-track .cci-ammo-toggle-thumb {
+  left: 18px;
+  background: #ef4444;
+}
+
+.cci-ammo-toggle-label {
+  font-size: 0.75em;
+  color: rgba(239, 68, 68, 0.7);
+  font-weight: 500;
+}
+
+/* Ammo dropzone */
+.cci-ammo-dropzone {
+  flex: 1;
+  min-height: 40px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px dashed rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.cci-ammo-dropzone.cci-dragover {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.cci-ammo-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 6px;
+}
+
+.cci-ammo-item img {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.cci-ammo-item::after {
+  content: attr(title);
+  font-size: 0.8em;
+  color: #e0e0e0;
+}
+
+.cci-remove-ammo {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(200, 50, 50, 0.9);
+  border: none;
+  color: white;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.cci-ammo-item:hover .cci-remove-ammo {
+  opacity: 1;
+}
+
+/* ============================================
+   DEFENSE SECTION
+   ============================================ */
+.cci-defense-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(59, 130, 246, 0.03);
+  border: 1px solid rgba(59, 130, 246, 0.12);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.cci-defense-header {
+  color: #3b82f6 !important;
+  border-bottom-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+.cci-defense-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cci-defense-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cci-defense-field label {
+  font-size: 0.6em !important;
+  font-weight: 600 !important;
+  color: rgba(59, 130, 246, 0.7) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.cci-defense-field input,
+.cci-defense-field .cci-readonly {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  border-radius: 6px !important;
+  color: #e0e0e0 !important;
+  font-size: 0.85em !important;
+  padding: 5px 8px !important;
+  height: 32px !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.cci-defense-field input::placeholder {
+  color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.cci-defense-field input:focus {
+  border-color: #3b82f6 !important;
+  outline: none !important;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.15) !important;
+}
+
+.cci-defense-field .cci-readonly {
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================
+   UTILITY SECTION
+   ============================================ */
+.cci-utility-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(234, 179, 8, 0.03);
+  border: 1px solid rgba(234, 179, 8, 0.12);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.cci-utility-header {
+  color: #eab308 !important;
+  border-bottom-color: rgba(234, 179, 8, 0.2) !important;
+}
+
+.cci-utility-hint {
+  font-size: 0.8em;
+  color: rgba(234, 179, 8, 0.5);
+  font-style: italic;
+}
+
+/* ============================================
+   SECTION HEADERS (shared)
+   ============================================ */
+.cci-section-header {
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cci-section-header i {
+  font-size: 0.9em;
+}
+
+/* ============================================
+   SPECIAL DROPZONE (kept for other types)
+   ============================================ */
+.cci-special-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cci-special-row > label {
+  font-size: 0.7em !important;
+  font-weight: 600 !important;
+  color: var(--cci-text-dim) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.cci-special-row .cci-hint {
+  color: rgba(255, 255, 255, 0.25);
+  font-weight: 400;
+  font-size: 0.9em;
+}
+
+.cci-special-dropzone {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 0;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px dashed var(--cci-border);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.cci-special-dropzone.cci-dragover {
+  border-color: var(--cci-accent);
+  background: rgba(100, 180, 220, 0.1);
+}
+
+.cci-drop-hint {
+  width: 100%;
+  text-align: center;
+  color: var(--cci-text-dim);
+  font-size: 0.8em;
+  font-style: italic;
+  padding: 6px 0;
+}
+
+.cci-ability-icon {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--cci-border);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cci-ability-icon:hover {
+  transform: scale(1.05);
+  border-color: var(--cci-accent);
+}
+
+.cci-ability-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cci-remove-ability {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(200, 50, 50, 0.9);
+  border: none;
+  color: white;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.cci-ability-icon:hover .cci-remove-ability {
+  opacity: 1;
+}
+
+/* === DESCRIPTION === */
+.cci-desc-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cci-desc-row > label {
+  font-size: 0.7em !important;
+  font-weight: 600 !important;
+  color: var(--cci-text-dim) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* WYSIWYG editor (GM) */
+.cci-wysiwyg-toolbar {
+  display: flex;
+  gap: 4px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--cci-border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  flex-wrap: wrap;
+}
+.cci-wysiwyg-toolbar button {
+  width: 28px;
+  height: 28px;
+  border-radius: 5px;
+  border: 1px solid rgba(100, 180, 220, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--cci-text);
+  font-size: 0.8em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+.cci-wysiwyg-toolbar button:hover {
+  background: rgba(100, 180, 220, 0.2);
+  border-color: var(--cci-accent);
+  color: var(--cci-accent);
+}
+.cci-wysiwyg-toolbar button:active {
+  transform: translateY(1px);
+}
+.cci-wysiwyg-sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(100, 180, 220, 0.15);
+  margin: 0 2px;
+  align-self: center;
+}
+.cci-wysiwyg {
+  background: var(--cci-input-bg);
+  border: 1px solid var(--cci-border);
+  border-radius: 0 0 8px 8px;
+  color: var(--cci-text);
+  font-size: 0.9em;
+  padding: 12px;
+  line-height: 1.5;
+  min-height: 180px;
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  outline: none;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.cci-wysiwyg img,
+.cci-description-render img {
+  max-width: 100%;
+  height: auto;
+}
+
+.cci-wysiwyg:focus {
+  border-color: var(--cci-accent);
+  box-shadow: 0 0 10px rgba(100, 180, 220, 0.1);
+}
+
+.cci-wysiwyg p { margin: 0 0 8px 0; }
+.cci-wysiwyg p:last-child { margin-bottom: 0; }
+.cci-wysiwyg strong { color: var(--cci-gold); }
+.cci-wysiwyg em { color: var(--cci-text-dim); }
+
+/* HTML render (Player) */
+.cci-description-render {
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  color: var(--cci-text);
+  font-size: 0.9em;
+  padding: 8px;
+  line-height: 1.45;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+}
+
+.cci-description-render p { margin: 0 0 8px 0; }
+.cci-description-render p:last-child { margin-bottom: 0; }
+.cci-description-render strong { color: var(--cci-gold); }
+.cci-description-render em { color: var(--cci-text-dim); }
+.cci-description-render ul, .cci-description-render ol {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+.cci-description-render li { margin: 2px 0; }
+
+/* === FLAVOR === */
+.cci-flavor-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(212, 169, 77, 0.05);
+  border: 1px solid var(--cci-gold-dim);
+  border-radius: 8px;
+}
+
+.cci-flavor-label {
+  font-size: 0.7em;
+  font-weight: 700;
+  color: var(--cci-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+.cci-flavor-text input {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  color: var(--cci-text-dim) !important;
+  font-size: 0.85em !important;
+  font-style: italic !important;
+  padding: 0 !important;
+}
+
+.cci-flavor-text input:focus {
+  outline: none !important;
+  color: var(--cci-text) !important;
+}
+
+.cci-flavor-text input::placeholder {
+  color: rgba(138, 155, 176, 0.4) !important;
+  font-style: italic !important;
+}
+
+.cci-flavor-display {
+  flex: 1;
+  color: var(--cci-text-dim);
+  font-size: 0.85em;
+  font-style: italic;
+}
+
+/* === SCROLLBAR === */
+.app.sheet.item ::-webkit-scrollbar { width: 6px; }
+.app.sheet.item ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 3px; }
+.app.sheet.item ::-webkit-scrollbar-thumb { background: var(--cci-accent-dim); border-radius: 3px; }
+.app.sheet.item ::-webkit-scrollbar-thumb:hover { background: var(--cci-accent); }
+
+/* ============================================
+   AMMO PANEL — Gray Theme
+   ============================================ */
+

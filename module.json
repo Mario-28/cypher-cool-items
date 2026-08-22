@@ -2,7 +2,7 @@
   "id": "cypher-cool-items",
   "title": "Cypher Cool Items",
   "description": "Complete visual rework of Cypher System item sheets with dark fantasy styling and enhanced item properties.",
-  "version": "1.4.5",
+  "version": "2.0.19",
   "compatibility": {
     "minimum": "14",
     "verified": "14.360"
@@ -14,8 +14,29 @@
     }
   ],
   "systems": ["cyphersystem"],
-  "esmodules": ["scripts/main.js"],
-  "styles": ["styles/cool-items.css"],
+  "esmodules": [
+    "scripts/core.js",
+    "scripts/ability.js",
+    "scripts/ammo.js",
+    "scripts/armor.js",
+    "scripts/artifact.js",
+    "scripts/attack.js",
+    "scripts/cypher.js",
+    "scripts/equipment.js",
+    "scripts/skill.js",
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/cool-items.css",
+    "styles/ability.css",
+    "styles/ammo.css",
+    "styles/armor.css",
+    "styles/artifact.css",
+    "styles/attack.css",
+    "styles/cypher.css",
+    "styles/equipment.css",
+    "styles/skill.css"
+  ],
   "languages": [
     {
       "lang": "en",

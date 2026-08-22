@@ -1,0 +1,192 @@
+/* ============================================
+   CYPHER COOL ITEMS — Equipment Type (Egg Nog)
+   ============================================ */
+
+/* Override window background for equipment items — egg nog tones */
+.app.sheet.item:has(.cci-equipment-panel) .window-content::before {
+  background: linear-gradient(180deg, #1a1710 0%, #2a2418 100%) !important;
+}
+
+.cci-equipment-panel {
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Equipment panel elements — egg nog accent overrides */
+.cci-equipment-panel .cci-image-glow {
+  background: radial-gradient(circle, rgba(212, 184, 150, 0.25) 0%, transparent 70%) !important;
+}
+
+.cci-equipment-panel .cci-image-ring {
+  border-color: #d4b896 !important;
+}
+
+.cci-equipment-panel .cci-name-input,
+.cci-equipment-panel .cci-name-display {
+  color: #d4b896 !important;
+  border-bottom-color: #d4b896 !important;
+}
+
+.cci-equipment-panel .cci-field-pair label {
+  color: #c9a86c !important;
+}
+
+.cci-equipment-panel .cci-readonly {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(212, 184, 150, 0.15) !important;
+  color: #f0e8d8 !important;
+}
+
+.cci-equipment-panel input[type="text"],
+.cci-equipment-panel input[type="number"] {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(212, 184, 150, 0.15) !important;
+  color: #f0e8d8 !important;
+}
+
+.cci-equipment-panel input[type="number"] {
+  color: #ffffff !important;
+}
+
+/* Level input styling */
+.cci-equipment-panel .cci-level-input {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(212, 184, 150, 0.15) !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+  font-size: 0.85em !important;
+  padding: 5px 8px !important;
+  height: 32px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.cci-equipment-panel .cci-level-input::placeholder {
+  color: rgba(212, 184, 150, 0.3) !important;
+}
+
+.cci-equipment-panel .cci-level-input:focus {
+  border-color: #d4b896 !important;
+  outline: none !important;
+}
+
+/* Dropdown styling */
+.cci-equipment-panel select {
+  background: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(212, 184, 150, 0.25) !important;
+  color: #ffffff !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23d4b896' fill-opacity='0.6' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 6px center !important;
+  padding-right: 20px !important;
+}
+
+.cci-equipment-panel select option,
+.cci-equipment-panel select optgroup {
+  background: #2a2418 !important;
+  color: #f0e8d8 !important;
+}
+
+/* Field pair and stat dropdowns */
+.cci-equipment-panel .cci-field-pair select,
+.cci-equipment-panel .cci-stat select {
+  background: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(212, 184, 150, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.cci-equipment-panel .cci-field-pair select option,
+.cci-equipment-panel .cci-stat select option {
+  background: #2a2418 !important;
+  color: #f0e8d8 !important;
+}
+
+.cci-equipment-panel .cci-rarity-badge {
+  border-color: color-mix(in srgb, var(--rarity-color, #d4b896) 30%, transparent) !important;
+}
+
+.cci-equipment-panel .cci-equipment-type-badge {
+  color: #d4b896 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  font-size: 0.75em !important;
+}
+
+.cci-equipment-panel .cci-price-row input {
+  color: #d4b896 !important;
+}
+
+.cci-equipment-panel .cci-size-badge {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  color: #c9a86c !important;
+}
+
+.cci-equipment-panel .cci-wysiwyg-toolbar {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(212, 184, 150, 0.15) !important;
+}
+
+.cci-equipment-panel .cci-wysiwyg-toolbar button {
+  color: #d4b896 !important;
+}
+
+.cci-equipment-panel .cci-wysiwyg-toolbar button:hover {
+  background: rgba(212, 184, 150, 0.2) !important;
+  color: #f0e8d8 !important;
+}
+
+.cci-equipment-panel .cci-wysiwyg {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(212, 184, 150, 0.15) !important;
+  color: #f0e8d8 !important;
+}
+
+.cci-equipment-panel .cci-flavor-label {
+  color: #d4b896 !important;
+}
+
+.cci-equipment-panel .cci-flavor-text input {
+  color: #d4b896 !important;
+  border-color: rgba(212, 184, 150, 0.15) !important;
+}
+
+/* Mid row background for equipment */
+.cci-equipment-panel .cci-mid-row {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(212, 184, 150, 0.15);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* Drop hint color */
+.cci-equipment-panel .cci-drop-hint {
+  color: rgba(212, 184, 150, 0.4) !important;
+}
+
+/* Special dropzone */
+.cci-equipment-panel .cci-special-dropzone {
+  border-color: rgba(212, 184, 150, 0.15) !important;
+}
+
+.cci-equipment-panel .cci-special-dropzone.cci-dragover {
+  border-color: #d4b896 !important;
+  background: rgba(212, 184, 150, 0.1) !important;
+}
+
+.cci-equipment-panel .cci-ability-icon {
+  border-color: rgba(212, 184, 150, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.cci-equipment-panel .cci-ability-icon:hover {
+  border-color: #d4b896 !important;
+  box-shadow: 0 4px 12px rgba(212, 184, 150, 0.15) !important;
+}

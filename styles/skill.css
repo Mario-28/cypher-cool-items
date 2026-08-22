@@ -1,0 +1,154 @@
+/* ============================================
+   CYPHER COOL ITEMS — Skill Type (White / Silver)
+   ============================================ */
+
+/* Override window background for skill items — light silver tones */
+.app.sheet.item:has(.cci-skill-panel) .window-content::before {
+  background: linear-gradient(180deg, #1a1a20 0%, #252530 100%) !important;
+}
+
+.cci-skill-panel {
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Skill panel elements — silver/white accent overrides */
+.cci-skill-panel .cci-image-glow {
+  background: radial-gradient(circle, rgba(200, 200, 210, 0.25) 0%, transparent 70%) !important;
+}
+
+.cci-skill-panel .cci-image-ring {
+  border-color: #c8c8d2 !important;
+}
+
+.cci-skill-panel .cci-name-input,
+.cci-skill-panel .cci-name-display {
+  color: #e8e8f0 !important;
+  border-bottom-color: #c8c8d2 !important;
+}
+
+.cci-skill-panel .cci-field-pair label {
+  color: #a0a0b0 !important;
+}
+
+.cci-skill-panel .cci-readonly {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(200, 200, 210, 0.15) !important;
+  color: #e8e8f0 !important;
+}
+
+.cci-skill-panel input[type="text"] {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(200, 200, 210, 0.15) !important;
+  color: #e8e8f0 !important;
+}
+
+/* Dropdown styling */
+.cci-skill-panel select {
+  background: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(200, 200, 210, 0.25) !important;
+  color: #ffffff !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23c8c8d2' fill-opacity='0.6' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 6px center !important;
+  padding-right: 20px !important;
+}
+
+.cci-skill-panel select option,
+.cci-skill-panel select optgroup {
+  background: #252530 !important;
+  color: #e8e8f0 !important;
+}
+
+.cci-skill-panel .cci-field-pair select,
+.cci-skill-panel .cci-stat select {
+  background: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(200, 200, 210, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.cci-skill-panel .cci-field-pair select option,
+.cci-skill-panel .cci-stat select option {
+  background: #252530 !important;
+  color: #e8e8f0 !important;
+}
+
+.cci-skill-panel .cci-skill-type-badge {
+  color: #c8c8d2 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  font-size: 0.75em !important;
+}
+
+/* Skill stat + training row */
+.cci-skill-panel .cci-stat-row {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(200, 200, 210, 0.15);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.cci-skill-panel .cci-skill-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cci-skill-panel .cci-skill-stat-badge {
+  color: #c8c8d2 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  font-size: 0.85em !important;
+}
+
+.cci-skill-panel .cci-wysiwyg-toolbar {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(200, 200, 210, 0.15) !important;
+}
+
+.cci-skill-panel .cci-wysiwyg-toolbar button {
+  color: #c8c8d2 !important;
+}
+
+.cci-skill-panel .cci-wysiwyg-toolbar button:hover {
+  background: rgba(200, 200, 210, 0.2) !important;
+  color: #e8e8f0 !important;
+}
+
+.cci-skill-panel .cci-wysiwyg {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(200, 200, 210, 0.15) !important;
+  color: #e8e8f0 !important;
+}
+
+.cci-skill-panel .cci-flavor-label {
+  color: #c8c8d2 !important;
+}
+
+.cci-skill-panel .cci-flavor-text input {
+  color: #c8c8d2 !important;
+  border-color: rgba(200, 200, 210, 0.15) !important;
+}
+
+/* Drop hint color */
+.cci-skill-panel .cci-drop-hint {
+  color: rgba(200, 200, 210, 0.4) !important;
+}
+
+/* Special dropzone */
+.cci-skill-panel .cci-special-dropzone {
+  border-color: rgba(200, 200, 210, 0.15) !important;
+}
+
+.cci-skill-panel .cci-special-dropzone.cci-dragover {
+  border-color: #c8c8d2 !important;
+  background: rgba(200, 200, 210, 0.1) !important;
+}

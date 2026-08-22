@@ -1,0 +1,522 @@
+/* ============================================
+   ATTACK PANEL — Red Theme
+   ============================================ */
+.cci-attack-panel {
+  --cci-bg: #1f0808;
+  --cci-bg-light: #2d1212;
+  --cci-accent: #ef4444;
+  --cci-accent-dim: rgba(239, 68, 68, 0.35);
+  --cci-gold: #f87171;
+  --cci-gold-dim: rgba(248, 113, 113, 0.3);
+  background: linear-gradient(180deg, #1f0808 0%, #2d1212 100%) !important;
+}
+
+/* Deep red background layer */
+.cci-attack-panel .cci-bg-image {
+  opacity: 0.06;
+}
+
+/* Name — bright red underline */
+.cci-attack-panel .cci-name-input,
+.cci-attack-panel .cci-name-display {
+  border-bottom-color: #dc2626 !important;
+  color: #ef4444 !important;
+}
+.cci-attack-panel .cci-name-input:focus {
+  border-bottom-color: #f87171 !important;
+}
+.cci-attack-panel .cci-name-input::placeholder {
+  color: rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Image glow — strong red */
+.cci-attack-panel .cci-image-glow {
+  background: rgba(220, 38, 38, 0.4);
+}
+.cci-attack-panel .cci-image-ring {
+  border-color: rgba(220, 38, 38, 0.5);
+}
+
+/* Inputs & selects — red border/focus */
+.cci-attack-panel .cci-field-pair input,
+.cci-attack-panel .cci-field-pair select,
+.cci-attack-panel .cci-stat input,
+.cci-attack-panel .cci-stat select {
+  border-color: rgba(220, 38, 38, 0.3) !important;
+}
+.cci-attack-panel .cci-field-pair input:focus,
+.cci-attack-panel .cci-field-pair select:focus,
+.cci-attack-panel .cci-stat input:focus,
+.cci-attack-panel .cci-stat select:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Dropdown arrow — red */
+.cci-attack-panel .cci-field-pair select,
+.cci-attack-panel .cci-stat select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23ef4444' fill-opacity='0.9' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 6px center !important;
+  padding-right: 20px !important;
+}
+
+/* Mid-row — strong red tint */
+.cci-attack-panel .cci-mid-row {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.25);
+}
+
+/* WYSIWYG toolbar — red accents */
+.cci-attack-panel .cci-wysiwyg-toolbar button:hover {
+  background: rgba(220, 38, 38, 0.3);
+  border-color: #ef4444;
+  color: #f87171;
+}
+.cci-attack-panel .cci-wysiwyg:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.25);
+}
+
+/* Flavor row — red */
+.cci-attack-panel .cci-flavor-text {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(248, 113, 113, 0.25);
+}
+.cci-attack-panel .cci-flavor-label {
+  color: #f87171;
+}
+
+/* Scrollbar — red */
+.app.sheet.item:has(.cci-attack-panel) ::-webkit-scrollbar-thumb {
+  background: rgba(220, 38, 38, 0.4);
+}
+.app.sheet.item:has(.cci-attack-panel) ::-webkit-scrollbar-thumb:hover {
+  background: #ef4444;
+}
+
+/* SPECIAL row — red tinted */
+.cci-attack-panel .cci-special-row > label {
+  color: #f87171 !important;
+}
+.cci-attack-panel .cci-special-dropzone {
+  border-color: rgba(220, 38, 38, 0.25);
+}
+.cci-attack-panel .cci-special-dropzone.cci-dragover {
+  border-color: #ef4444;
+  background: rgba(220, 38, 38, 0.1);
+}
+
+/* ============================================
+   ATTACK DYNAMIC SECTION
+   ============================================ */
+.cci-attack-dynamic {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* === ABILITY DROP === */
+.cci-attack-ability-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(234, 179, 8, 0.03);
+  border: 1px solid rgba(234, 179, 8, 0.12);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.cci-ability-drop-header {
+  color: #eab308 !important;
+  border-bottom-color: rgba(234, 179, 8, 0.2) !important;
+}
+
+.cci-ability-dropzone {
+  min-height: 48px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px dashed rgba(234, 179, 8, 0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.cci-ability-dropzone.cci-dragover {
+  border-color: #eab308;
+  background: rgba(234, 179, 8, 0.05);
+}
+
+.cci-ability-dropped {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.2);
+  border-radius: 6px;
+  position: relative;
+}
+
+.cci-ability-dropped img {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.cci-ability-dropped span {
+  font-size: 0.85em;
+  color: #e0e0e0;
+}
+
+.cci-ability-dropped .cci-remove-ability {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(200, 50, 50, 0.9);
+  border: none;
+  color: white;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.cci-ability-dropped:hover .cci-remove-ability {
+  opacity: 1;
+}
+
+.cci-ability-values {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.cci-ability-value {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+.cci-ability-value-label {
+  font-size: 0.6em;
+  font-weight: 600;
+  color: rgba(234, 179, 8, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cci-ability-value-text {
+  font-size: 0.85em;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+/* === MELEE SECTION === */
+.cci-attack-melee-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(239, 68, 68, 0.03);
+  border: 1px solid rgba(239, 68, 68, 0.12);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.cci-melee-header {
+  color: #ef4444 !important;
+  border-bottom-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* === RANGED SECTION === */
+.cci-attack-ranged-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(220, 38, 38, 0.04);
+  border: 1px solid rgba(220, 38, 38, 0.15);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.cci-ranged-header {
+  color: #ef4444 !important;
+  border-bottom-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* === ATTACK GRID (shared) === */
+.cci-attack-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cci-attack-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cci-attack-field label {
+  font-size: 0.6em !important;
+  font-weight: 600 !important;
+  color: rgba(239, 68, 68, 0.8) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.cci-attack-field input,
+.cci-attack-field select,
+.cci-attack-field .cci-readonly {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(220, 38, 38, 0.25) !important;
+  border-radius: 6px !important;
+  color: #e0e0e0 !important;
+  font-size: 0.85em !important;
+  padding: 5px 8px !important;
+  height: 32px !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.cci-attack-field input::placeholder {
+  color: rgba(239, 68, 68, 0.35) !important;
+}
+
+.cci-attack-field input:focus,
+.cci-attack-field select:focus {
+  border-color: #ef4444 !important;
+  outline: none !important;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.2) !important;
+}
+
+.cci-attack-field .cci-readonly {
+  display: flex;
+  align-items: center;
+}
+
+/* === RANGED AMMO ROW === */
+.cci-ranged-ammo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+.cci-ranged-ammo-label {
+  font-size: 0.7em;
+  font-weight: 600;
+  color: rgba(239, 68, 68, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cci-ranged-ammo-dropzone {
+  flex: 1;
+  min-height: 36px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px dashed rgba(220, 38, 38, 0.25);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.cci-ranged-ammo-dropzone.cci-dragover {
+  border-color: #ef4444;
+  background: rgba(220, 38, 38, 0.08);
+}
+
+/* === AMMO ROW (old, kept for compatibility) === */
+.cci-ammo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.cci-ammo-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cci-ammo-toggle input[type="checkbox"] {
+  display: none !important;
+}
+
+.cci-ammo-toggle-track {
+  width: 36px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.cci-ammo-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.cci-ammo-toggle input:checked + .cci-ammo-toggle-track {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.cci-ammo-toggle input:checked + .cci-ammo-toggle-track .cci-ammo-toggle-thumb {
+  left: 18px;
+  background: #3b82f6;
+}
+
+.cci-ammo-toggle-label {
+  font-size: 0.75em;
+  color: rgba(59, 130, 246, 0.7);
+  font-weight: 500;
+}
+
+.cci-ammo-status {
+  font-size: 0.75em;
+  color: rgba(59, 130, 246, 0.7);
+  font-weight: 500;
+}
+
+/* Ammo dropzone */
+.cci-ammo-dropzone {
+  flex: 1;
+  min-height: 40px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px dashed rgba(59, 130, 246, 0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.cci-ammo-dropzone.cci-dragover {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.cci-ammo-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 6px;
+}
+
+.cci-ammo-item img {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.cci-ammo-item span {
+  font-size: 0.8em;
+  color: #e0e0e0;
+}
+
+.cci-ammo-item .cci-remove-ammo {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(200, 50, 50, 0.9);
+  border: none;
+  color: white;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.cci-ammo-item:hover .cci-remove-ammo {
+  opacity: 1;
+}
+
+/* === SECTION HEADERS === */
+.cci-section-header {
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cci-section-header i {
+  font-size: 0.9em;
+}
+
+/* === SHARED === */
+.cci-drop-hint {
+  width: 100%;
+  text-align: center;
+  color: var(--cci-text-dim);
+  font-size: 0.8em;
+  font-style: italic;
+  padding: 6px 0;
+}
+
+.cci-ability-dropped-readonly {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+}
+
+.cci-ability-dropped-readonly img {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.cci-ability-dropped-readonly span {
+  font-size: 0.85em;
+  color: #e0e0e0;
+}

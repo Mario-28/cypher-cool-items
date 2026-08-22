@@ -1,0 +1,419 @@
+.cci-artifact-panel {
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Override window background for artifact items */
+.app.sheet.item:has(.cci-artifact-panel) .window-content::before {
+  background: linear-gradient(180deg, #1a1025 0%, #2a1835 100%) !important;
+}
+
+/* Artifact panel elements — purple accent overrides */
+.cci-artifact-panel .cci-image-glow {
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.25) 0%, transparent 70%) !important;
+}
+
+.cci-artifact-panel .cci-image-ring {
+  border-color: #c084fc !important;
+}
+
+.cci-artifact-panel .cci-name-input,
+.cci-artifact-panel .cci-name-display {
+  color: #c084fc !important;
+  border-bottom-color: #c084fc !important;
+}
+
+.cci-artifact-panel .cci-field-pair label {
+  color: #a855f7 !important;
+}
+
+.cci-artifact-panel .cci-readonly {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(192, 132, 252, 0.15) !important;
+  color: #e0d0f0 !important;
+}
+
+.cci-artifact-panel input[type="text"],
+.cci-artifact-panel input[type="number"] {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(192, 132, 252, 0.15) !important;
+  color: #e0d0f0 !important;
+}
+
+.cci-artifact-panel input[type="number"] {
+  color: #ffffff !important;
+}
+
+.cci-artifact-panel select {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(192, 132, 252, 0.15) !important;
+  color: #e0d0f0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23c084fc' fill-opacity='0.6' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 6px center !important;
+  padding-right: 20px !important;
+}
+
+.cci-artifact-panel select option,
+.cci-artifact-panel select optgroup {
+  background: #2a1835 !important;
+  color: #e0d0f0 !important;
+}
+
+.cci-artifact-panel .cci-rarity-badge {
+  border-color: color-mix(in srgb, var(--rarity-color, #c084fc) 30%, transparent) !important;
+}
+
+.cci-artifact-panel .cci-price-row input {
+  color: #c084fc !important;
+}
+
+.cci-artifact-panel .cci-size-badge {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  color: #a855f7 !important;
+}
+
+.cci-artifact-panel .cci-wysiwyg-toolbar {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(192, 132, 252, 0.15) !important;
+}
+
+.cci-artifact-panel .cci-wysiwyg-toolbar button {
+  color: #c084fc !important;
+}
+
+.cci-artifact-panel .cci-wysiwyg-toolbar button:hover {
+  background: rgba(192, 132, 252, 0.2) !important;
+  color: #e0d0f0 !important;
+}
+
+.cci-artifact-panel .cci-wysiwyg {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(192, 132, 252, 0.15) !important;
+  color: #e0d0f0 !important;
+}
+
+.cci-artifact-panel .cci-flavor-label {
+  color: #c084fc !important;
+}
+
+.cci-artifact-panel .cci-flavor-text input {
+  color: #c084fc !important;
+  border-color: rgba(192, 132, 252, 0.15) !important;
+}
+
+.cci-artifact-panel .cci-special-dropzone {
+  border-color: rgba(192, 132, 252, 0.15) !important;
+}
+
+.cci-artifact-panel .cci-special-dropzone.cci-dragover {
+  border-color: #c084fc !important;
+  background: rgba(192, 132, 252, 0.1) !important;
+}
+
+.cci-artifact-panel .cci-drop-hint {
+  color: rgba(192, 132, 252, 0.4) !important;
+}
+
+.cci-artifact-panel .cci-ability-icon {
+  border-color: rgba(192, 132, 252, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.cci-artifact-panel .cci-ability-icon:hover {
+  border-color: #c084fc !important;
+  box-shadow: 0 4px 12px rgba(192, 132, 252, 0.15) !important;
+}
+
+/* === ARTIFACT EFFECTS === */
+.cci-effects-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cci-effects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cci-effects-header label {
+  font-size: 0.7em !important;
+  font-weight: 600 !important;
+  color: #a855f7 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.cci-add-effect {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 5px !important;
+  background: rgba(192, 132, 252, 0.15) !important;
+  border: 1px solid rgba(192, 132, 252, 0.3) !important;
+  color: #c084fc !important;
+  font-size: 0.7em !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.cci-add-effect:hover {
+  background: rgba(192, 132, 252, 0.25) !important;
+  border-color: #c084fc !important;
+}
+
+.cci-effects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cci-effect-row {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(192, 132, 252, 0.15);
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cci-effect-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.cci-effect-name {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(192, 132, 252, 0.2) !important;
+  border-radius: 6px !important;
+  color: #e0d0f0 !important;
+  font-size: 0.9em !important;
+  padding: 5px 8px !important;
+  height: 32px !important;
+  box-sizing: border-box !important;
+}
+
+.cci-effect-name::placeholder {
+  color: rgba(192, 132, 252, 0.3) !important;
+}
+
+.cci-effect-name-readonly {
+  flex: 1;
+  color: #c084fc !important;
+  font-size: 0.9em !important;
+  font-weight: 600 !important;
+}
+
+.cci-remove-effect {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  font-size: 0.8em;
+}
+
+.cci-remove-effect:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+}
+
+.cci-effect-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cci-effect-special label {
+  font-size: 0.65em !important;
+  font-weight: 600 !important;
+  color: #a855f7 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cci-effect-special .cci-special-dropzone {
+  min-height: 64px;
+  padding: 10px;
+}
+
+.cci-effect-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cci-effect-textarea {
+  width: 100% !important;
+  min-height: 60px !important;
+  max-height: 120px !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(192, 132, 252, 0.15) !important;
+  border-radius: 6px !important;
+  color: #e0d0f0 !important;
+  font-size: 0.85em !important;
+  padding: 8px !important;
+  resize: vertical !important;
+  box-sizing: border-box !important;
+  font-family: inherit !important;
+  line-height: 1.4 !important;
+}
+
+.cci-effect-textarea::placeholder {
+  color: rgba(192, 132, 252, 0.3) !important;
+}
+
+.cci-effect-textarea:focus {
+  border-color: #c084fc !important;
+  outline: none !important;
+}
+
+.cci-effect-desc-render {
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(192, 132, 252, 0.1);
+  border-radius: 6px;
+  color: #e0d0f0;
+  font-size: 0.85em;
+  padding: 10px;
+  line-height: 1.4;
+  min-height: 40px;
+}
+
+.cci-effect-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.cci-effect-depletion,
+.cci-effect-depleted {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cci-effect-depletion label,
+.cci-effect-depleted label {
+  font-size: 0.65em !important;
+  font-weight: 600 !important;
+  color: #a855f7 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  white-space: nowrap;
+}
+
+.cci-effect-depletion select {
+  background: linear-gradient(180deg, rgba(40, 25, 60, 0.9) 0%, rgba(25, 15, 40, 0.95) 100%) !important;
+  border: 2px solid rgba(192, 132, 252, 0.6) !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+  font-size: 0.9em !important;
+  font-weight: 500 !important;
+  padding: 5px 28px 5px 10px !important;
+  height: 34px !important;
+  min-width: 110px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 12 12'%3E%3Cpath fill='%23c084fc' fill-opacity='1' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 8px center !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(192, 132, 252, 0.1) !important;
+}
+
+.cci-effect-depletion select:hover {
+  border-color: #c084fc !important;
+  box-shadow: 0 2px 12px rgba(192, 132, 252, 0.2), inset 0 1px 0 rgba(192, 132, 252, 0.15) !important;
+}
+
+.cci-effect-depletion select:focus {
+  border-color: #d8b4fe !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.15), 0 2px 12px rgba(192, 132, 252, 0.2) !important;
+}
+
+.cci-effect-depletion select option {
+  background: #2a1835 !important;
+  color: #e0d0f0 !important;
+}
+
+.cci-effect-depleted input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 22px !important;
+  height: 22px !important;
+  border: 2px solid rgba(192, 132, 252, 0.6) !important;
+  border-radius: 5px !important;
+  background: linear-gradient(180deg, rgba(40, 25, 60, 0.9) 0%, rgba(25, 15, 40, 0.95) 100%) !important;
+  cursor: pointer !important;
+  position: relative !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.15s ease !important;
+}
+
+.cci-effect-depleted input[type="checkbox"]:hover {
+  border-color: #c084fc !important;
+  box-shadow: 0 2px 12px rgba(192, 132, 252, 0.2) !important;
+}
+
+.cci-effect-depleted input[type="checkbox"]:checked {
+  background: linear-gradient(180deg, #a855f7 0%, #7c3aed 100%) !important;
+  border-color: #c084fc !important;
+  box-shadow: 0 0 10px rgba(192, 132, 252, 0.3) !important;
+}
+
+.cci-effect-depleted input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: white;
+  border-radius: 2px;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.cci-form-input {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(192, 132, 252, 0.15) !important;
+  border-radius: 6px !important;
+  color: #e0d0f0 !important;
+  font-size: 0.85em !important;
+  padding: 5px 8px !important;
+  height: 32px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.cci-form-input::placeholder {
+  color: rgba(192, 132, 252, 0.3) !important;
+}
+
+.cci-form-input:focus {
+  border-color: #c084fc !important;
+  outline: none !important;
+}

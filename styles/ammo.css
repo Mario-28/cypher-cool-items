@@ -1,0 +1,133 @@
+.cci-ammo-panel {
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Override window background for ammo items */
+.app.sheet.item:has(.cci-ammo-panel) .window-content::before {
+  background: linear-gradient(180deg, #1e1e24 0%, #2a2a32 100%) !important;
+}
+
+/* Ammo panel elements — gray accent overrides */
+.cci-ammo-panel .cci-image-glow {
+  background: radial-gradient(circle, rgba(160, 160, 168, 0.2) 0%, transparent 70%) !important;
+}
+
+.cci-ammo-panel .cci-image-ring {
+  border-color: #a0a0a8 !important;
+}
+
+.cci-ammo-panel .cci-name-input,
+.cci-ammo-panel .cci-name-display {
+  color: #b0b0b8 !important;
+}
+
+.cci-ammo-panel .cci-field-pair label {
+  color: #909098 !important;
+}
+
+.cci-ammo-panel .cci-readonly {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(160, 160, 168, 0.15) !important;
+  color: #d8d8e0 !important;
+}
+
+.cci-ammo-panel input[type="text"],
+.cci-ammo-panel input[type="number"] {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(160, 160, 168, 0.15) !important;
+  color: #d8d8e0 !important;
+}
+
+.cci-ammo-panel select {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(160, 160, 168, 0.15) !important;
+  color: #d8d8e0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0a8' fill-opacity='0.6' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 6px center !important;
+  padding-right: 20px !important;
+}
+
+.cci-ammo-panel select option,
+.cci-ammo-panel select optgroup {
+  background: #2a2a32 !important;
+  color: #d8d8e0 !important;
+}
+
+.cci-ammo-panel .cci-rarity-badge {
+  border-color: color-mix(in srgb, var(--rarity-color, #909098) 30%, transparent) !important;
+}
+
+.cci-ammo-panel .cci-price-row input {
+  color: #b0b0b8 !important;
+}
+
+.cci-ammo-panel .cci-size-badge {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  color: #909098 !important;
+}
+
+.cci-ammo-panel .cci-wysiwyg-toolbar {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(160, 160, 168, 0.15) !important;
+}
+
+.cci-ammo-panel .cci-wysiwyg-toolbar button {
+  color: #a0a0a8 !important;
+}
+
+.cci-ammo-panel .cci-wysiwyg-toolbar button:hover {
+  background: rgba(160, 160, 168, 0.2) !important;
+  color: #d8d8e0 !important;
+}
+
+.cci-ammo-panel .cci-wysiwyg {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(160, 160, 168, 0.15) !important;
+  color: #d8d8e0 !important;
+}
+
+.cci-ammo-panel .cci-flavor-label {
+  color: #b0b0b8 !important;
+}
+
+.cci-ammo-panel .cci-flavor-text input {
+  color: #b0b0b8 !important;
+  border-color: rgba(176, 176, 184, 0.15) !important;
+}
+
+.cci-ammo-panel .cci-special-dropzone {
+  border-color: rgba(160, 160, 168, 0.15) !important;
+}
+
+.cci-ammo-panel .cci-special-dropzone.cci-dragover {
+  border-color: #a0a0a8 !important;
+  background: rgba(160, 160, 168, 0.1) !important;
+}
+
+.cci-ammo-panel .cci-drop-hint {
+  color: rgba(160, 160, 168, 0.4) !important;
+}
+
+.cci-ammo-panel .cci-ability-icon {
+  border-color: rgba(160, 160, 168, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.cci-ammo-panel .cci-ability-icon:hover {
+  border-color: #a0a0a8 !important;
+  box-shadow: 0 4px 12px rgba(160, 160, 168, 0.15) !important;
+}
+
+/* ============================================
+   ARMOR PANEL — Green Theme
+   ============================================ */
+
