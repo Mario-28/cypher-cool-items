@@ -23,7 +23,7 @@ export function buildAbilityPanel(item, isGM) {
   const poolCostPool = data.poolCostPool || 'none';
   const poolCost = data.poolCost ?? '';
   const flavor = data.flavor || '';
-  const description = sys.description || '';
+  const description = data.description || sys.description || '';
 
   // Ability mode flags
   const attack = data.attack || false;

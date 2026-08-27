@@ -12,7 +12,7 @@ export function buildEquipmentPanel(item, isGM) {
   const coin = data.coin || 'gp';
   const size = data.size || 'small';
   const flavor = data.flavor || '';
-  const description = sys.description || '';
+  const description = data.description || sys.description || '';
 
   const panel = document.createElement('div');
   panel.className = 'cci-cool-panel cci-equipment-panel';

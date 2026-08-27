@@ -1,14 +1,93 @@
 import { opts, CCI_CONFIG, CoolItemData } from './core.js';
 
+/* ═══════════════════════════════════════════════════════════════
+   Skill Training ↔ Cypher System Rating Mapping
+   ═══════════════════════════════════════════════════════════════ */
+const TRAINING_TO_RATING = {
+  inability: -1,
+  practiced: 0,
+  trained: 1,
+  specialized: 2
+};
+const RATING_TO_TRAINING = {
+  '-1': 'inability',
+  '0': 'practiced',
+  '1': 'trained',
+  '2': 'specialized'
+};
+
+const TRAINING_TO_BASIC_RATING = {
+  inability: 'Inability',
+  practiced: 'Practiced',
+  trained: 'Trained',
+  specialized: 'Specialized'
+};
+const BASIC_RATING_TO_TRAINING = {
+  'Inability': 'inability',
+  'Practiced': 'practiced',
+  'Trained': 'trained',
+  'Specialized': 'specialized'
+};
+
+/* Sync Cypher Cool Items training with Cypher System native rating */
+function syncTrainingToRating(item, training) {
+  const level = TRAINING_TO_RATING[training];
+  const basicRating = TRAINING_TO_BASIC_RATING[training];
+  const update = {};
+  // Canonical Cypher System v2 field
+  if (level !== undefined) update['system.settings.level'] = level;
+  // Backward-compat fields
+  if (level !== undefined) update['system.rating'] = level;
+  if (basicRating !== undefined) update['system.basic.rating'] = basicRating;
+  if (Object.keys(update).length > 0) {
+    // Use item.update() — canonical API for both owned and unowned items
+    item.update(update, { render: false }).catch(() => {});
+  }
+}
+
+function syncRatingToTraining(item) {
+  // Cypher System v2+ canonical field: system.settings.level
+  const settingsLevel = item.system?.settings?.level;
+  if (settingsLevel !== undefined && RATING_TO_TRAINING[settingsLevel] !== undefined) {
+    return RATING_TO_TRAINING[settingsLevel];
+  }
+  // Fallback: system.basic.rating (string)
+  const basicRating = item.system?.basic?.rating;
+  if (basicRating !== undefined && BASIC_RATING_TO_TRAINING[basicRating] !== undefined) {
+    return BASIC_RATING_TO_TRAINING[basicRating];
+  }
+  // Legacy numeric fallback
+  const rating = item.system?.rating;
+  if (rating !== undefined && RATING_TO_TRAINING[rating] !== undefined) {
+    return RATING_TO_TRAINING[rating];
+  }
+  return null;
+}
+
+/* Sync description both ways (CCI priority) */
+function syncDescription(item, description) {
+  item.update({ 'system.description': description }, { render: false }).catch(() => {});
+}
+
 export function buildSkillPanel(item, isGM) {
   const data = CoolItemData.get(item);
   const sys = item.system || {};
 
-  const skillStat = data.skillStat || 'might';
-  const skillTraining = data.skillTraining || 'practiced';
+  // Stat: CCI priority, fallback to Cypher System canonical field
+  const skillStat = data.skillStat || sys.settings?.pool || sys.stat || 'might';
+
+  // Training: CCI priority, fallback to Cypher System rating mapping
+  let skillTraining = data.skillTraining;
+  if (!skillTraining) {
+    skillTraining = syncRatingToTraining(item) || 'practiced';
+  }
+  skillTraining = skillTraining || 'practiced';
+
   const skillType = data.skillType || 'physical';
   const flavor = data.flavor || '';
-  const description = sys.description || '';
+
+  // Description: CCI priority, fallback to Cypher System
+  const description = data.description || sys.description || '';
 
   const panel = document.createElement('div');
   panel.className = 'cci-cool-panel cci-skill-panel';
@@ -60,7 +139,10 @@ export function buildSkillPanel(item, isGM) {
       </div>
       <div class="cci-stat">
         <label>Training</label>
-        <select data-prop="skillTraining">${opts(CCI_CONFIG.skillTraining, skillTraining)}</select>
+        ${isGM
+          ? `<select data-prop="skillTraining">${opts(CCI_CONFIG.skillTraining, skillTraining)}</select>`
+          : `<div class="cci-readonly cci-skill-training-badge">${CCI_CONFIG.skillTraining[skillTraining]}</div>`
+        }
       </div>
     </div>
   `;
@@ -115,6 +197,6 @@ export function buildSkillPanel(item, isGM) {
 }
 
 export function bindSkillEvents(panel, item, isGM) {
-  // Skill-specific events (if needed in the future)
-  // Currently all standard field bindings are handled by bindCommonEvents in core.js
+  // Skill-specific events are now handled by bindCommonEvents in core.js
+  // which includes sync to Cypher System native fields (rating, stat, description)
 }

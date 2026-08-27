@@ -1,154 +1,151 @@
 /* ============================================
-   CYPHER COOL ITEMS — Skill Type (White / Silver)
+   SKILL PANEL — Sapphire/Wisdom Theme
    ============================================ */
-
-/* Override window background for skill items — light silver tones */
-.app.sheet.item:has(.cci-skill-panel) .window-content::before {
-  background: linear-gradient(180deg, #1a1a20 0%, #252530 100%) !important;
-}
-
 .cci-skill-panel {
-  position: relative;
-  z-index: 1;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  --cci-bg: #0f1419;
+  --cci-bg-light: #1a2030;
+  --cci-accent: #60a5fa;
+  --cci-accent-dim: rgba(96, 165, 250, 0.25);
+  --cci-gold: #93c5fd;
+  --cci-gold-dim: rgba(147, 197, 253, 0.2);
+  background: linear-gradient(180deg, #0f1419 0%, #1a2030 100%) !important;
 }
 
-/* Skill panel elements — silver/white accent overrides */
-.cci-skill-panel .cci-image-glow {
-  background: radial-gradient(circle, rgba(200, 200, 210, 0.25) 0%, transparent 70%) !important;
+/* Deep blue background layer */
+.cci-skill-panel .cci-bg-image {
+  opacity: 0.08;
 }
 
-.cci-skill-panel .cci-image-ring {
-  border-color: #c8c8d2 !important;
-}
-
+/* Name — sapphire underline */
 .cci-skill-panel .cci-name-input,
 .cci-skill-panel .cci-name-display {
+  border-bottom-color: #3b82f6 !important;
+  color: #60a5fa !important;
+}
+.cci-skill-panel .cci-name-input:focus {
+  border-bottom-color: #93c5fd !important;
+}
+.cci-skill-panel .cci-name-input::placeholder {
+  color: rgba(96, 165, 250, 0.3) !important;
+}
+
+/* Image glow — sapphire */
+.cci-skill-panel .cci-image-glow {
+  background: rgba(59, 130, 246, 0.25);
+}
+.cci-skill-panel .cci-image-ring {
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+/* Inputs & selects — blue border/focus */
+.cci-skill-panel .cci-field-pair input,
+.cci-skill-panel .cci-field-pair select,
+.cci-skill-panel .cci-field-pair textarea {
+  background: rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
   color: #e8e8f0 !important;
-  border-bottom-color: #c8c8d2 !important;
 }
-
+.cci-skill-panel .cci-field-pair input:focus,
+.cci-skill-panel .cci-field-pair select:focus,
+.cci-skill-panel .cci-field-pair textarea:focus {
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.15) !important;
+}
 .cci-skill-panel .cci-field-pair label {
-  color: #a0a0b0 !important;
+  color: #60a5fa !important;
 }
 
+/* Readonly badges */
 .cci-skill-panel .cci-readonly {
   background: rgba(0, 0, 0, 0.35) !important;
-  border-color: rgba(200, 200, 210, 0.15) !important;
+  border-color: rgba(96, 165, 250, 0.15) !important;
   color: #e8e8f0 !important;
 }
 
-.cci-skill-panel input[type="text"] {
-  background: rgba(0, 0, 0, 0.35) !important;
-  border: 1px solid rgba(200, 200, 210, 0.15) !important;
-  color: #e8e8f0 !important;
+/* Specific badge colors */
+.cci-skill-panel .cci-skill-type-badge {
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: #93c5fd !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+.cci-skill-panel .cci-skill-stat-badge {
+  background: rgba(96, 165, 250, 0.1) !important;
+  color: #60a5fa !important;
+  border: 1px solid rgba(96, 165, 250, 0.2) !important;
+}
+.cci-skill-panel .cci-skill-training-badge {
+  background: rgba(147, 197, 253, 0.1) !important;
+  color: #bfdbfe !important;
+  border: 1px solid rgba(147, 197, 253, 0.2) !important;
 }
 
 /* Dropdown styling */
 .cci-skill-panel select {
-  background: rgba(0, 0, 0, 0.45) !important;
-  border: 1px solid rgba(200, 200, 210, 0.25) !important;
-  color: #ffffff !important;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23c8c8d2' fill-opacity='0.6' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-color: rgba(0, 0, 0, 0.4) !important;
   background-repeat: no-repeat !important;
   background-position: right 6px center !important;
-  padding-right: 20px !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  color: #e8e8f0 !important;
 }
-
-.cci-skill-panel select option,
-.cci-skill-panel select optgroup {
-  background: #252530 !important;
+.cci-skill-panel select option {
+  background: #1a2030 !important;
   color: #e8e8f0 !important;
 }
 
-.cci-skill-panel .cci-field-pair select,
-.cci-skill-panel .cci-stat select {
-  background: rgba(0, 0, 0, 0.45) !important;
-  border: 1px solid rgba(200, 200, 210, 0.25) !important;
-  color: #ffffff !important;
+/* Flavor text */
+.cci-skill-panel .cci-flavor-text {
+  color: #a0a0b0 !important;
+  border-left-color: rgba(59, 130, 246, 0.3) !important;
 }
 
-.cci-skill-panel .cci-field-pair select option,
-.cci-skill-panel .cci-stat select option {
-  background: #252530 !important;
-  color: #e8e8f0 !important;
-}
-
-.cci-skill-panel .cci-skill-type-badge {
-  color: #c8c8d2 !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-  font-size: 0.75em !important;
-}
-
-/* Skill stat + training row */
-.cci-skill-panel .cci-stat-row {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(200, 200, 210, 0.15);
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.cci-skill-panel .cci-skill-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.cci-skill-panel .cci-skill-stat-badge {
-  color: #c8c8d2 !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-  font-size: 0.85em !important;
-}
-
+/* WYSIWYG Toolbar */
 .cci-skill-panel .cci-wysiwyg-toolbar {
   background: rgba(0, 0, 0, 0.3) !important;
-  border-color: rgba(200, 200, 210, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.15) !important;
 }
-
 .cci-skill-panel .cci-wysiwyg-toolbar button {
-  color: #c8c8d2 !important;
+  color: rgba(96, 165, 250, 0.7) !important;
 }
-
 .cci-skill-panel .cci-wysiwyg-toolbar button:hover {
-  background: rgba(200, 200, 210, 0.2) !important;
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: #93c5fd !important;
+}
+.cci-skill-panel .cci-wysiwyg-toolbar button.active {
+  background: rgba(59, 130, 246, 0.25) !important;
+  color: #93c5fd !important;
+}
+
+/* Description */
+.cci-skill-panel .cci-description-textarea,
+.cci-skill-panel .cci-description-display {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(59, 130, 246, 0.15) !important;
   color: #e8e8f0 !important;
 }
 
-.cci-skill-panel .cci-wysiwyg {
-  background: rgba(0, 0, 0, 0.35) !important;
-  border-color: rgba(200, 200, 210, 0.15) !important;
-  color: #e8e8f0 !important;
+/* Scrollbar */
+.cci-skill-panel ::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.25) !important;
+}
+.cci-skill-panel ::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.4) !important;
 }
 
-.cci-skill-panel .cci-flavor-label {
-  color: #c8c8d2 !important;
+/* Player view adjustments */
+.cci-skill-panel.cci-player-view .cci-image-glow {
+  background: rgba(59, 130, 246, 0.15);
 }
 
-.cci-skill-panel .cci-flavor-text input {
-  color: #c8c8d2 !important;
-  border-color: rgba(200, 200, 210, 0.15) !important;
+/* Stat row styling */
+.cci-skill-panel .cci-stat-row {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(59, 130, 246, 0.1) !important;
+  border-radius: 8px;
+  padding: 8px 12px;
 }
-
-/* Drop hint color */
-.cci-skill-panel .cci-drop-hint {
-  color: rgba(200, 200, 210, 0.4) !important;
-}
-
-/* Special dropzone */
-.cci-skill-panel .cci-special-dropzone {
-  border-color: rgba(200, 200, 210, 0.15) !important;
-}
-
-.cci-skill-panel .cci-special-dropzone.cci-dragover {
-  border-color: #c8c8d2 !important;
-  background: rgba(200, 200, 210, 0.1) !important;
+.cci-skill-panel .cci-stat-row label {
+  color: #60a5fa !important;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }

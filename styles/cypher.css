@@ -1,216 +1,163 @@
 /* ============================================
-   CYPHER COOL ITEMS — Cypher Type (Orange)
+   CYPHER PANEL — Orange/Mystery Theme
    ============================================ */
-
-/* Override window background for cypher items — orange tones */
-.app.sheet.item:has(.cci-cypher-panel) .window-content::before {
+.cci-cypher-panel {
+  --cci-bg: #1a1208;
+  --cci-bg-light: #2a1a0a;
+  --cci-accent: #f97316;
+  --cci-accent-dim: rgba(249, 115, 22, 0.25);
+  --cci-gold: #fb923c;
+  --cci-gold-dim: rgba(251, 146, 60, 0.2);
   background: linear-gradient(180deg, #1a1208 0%, #2a1a0a 100%) !important;
 }
 
-.cci-cypher-panel {
-  position: relative;
-  z-index: 1;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* Deep orange background layer */
+.cci-cypher-panel .cci-bg-image {
+  opacity: 0.08;
 }
 
-/* Cypher panel elements — orange accent overrides */
-.cci-cypher-panel .cci-image-glow {
-  background: radial-gradient(circle, rgba(251, 146, 60, 0.25) 0%, transparent 70%) !important;
-}
-
-.cci-cypher-panel .cci-image-ring {
-  border-color: #fb923c !important;
-}
-
+/* Name — orange underline */
 .cci-cypher-panel .cci-name-input,
 .cci-cypher-panel .cci-name-display {
+  border-bottom-color: #f97316 !important;
   color: #fb923c !important;
+}
+.cci-cypher-panel .cci-name-input:focus {
   border-bottom-color: #fb923c !important;
 }
+.cci-cypher-panel .cci-name-input::placeholder {
+  color: rgba(251, 146, 60, 0.3) !important;
+}
 
+/* Image glow — orange */
+.cci-cypher-panel .cci-image-glow {
+  background: rgba(249, 115, 22, 0.3);
+}
+.cci-cypher-panel .cci-image-ring {
+  border-color: rgba(249, 115, 22, 0.4);
+}
+
+/* Inputs & selects — orange border/focus */
+.cci-cypher-panel .cci-field-pair input,
+.cci-cypher-panel .cci-field-pair select,
+.cci-cypher-panel .cci-field-pair textarea {
+  background: rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(249, 115, 22, 0.2) !important;
+  color: #f0e0d0 !important;
+}
+.cci-cypher-panel .cci-field-pair input:focus,
+.cci-cypher-panel .cci-field-pair select:focus,
+.cci-cypher-panel .cci-field-pair textarea:focus {
+  border-color: #fb923c !important;
+  box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.15) !important;
+}
 .cci-cypher-panel .cci-field-pair label {
   color: #f97316 !important;
 }
 
+/* Readonly badges */
 .cci-cypher-panel .cci-readonly {
   background: rgba(0, 0, 0, 0.35) !important;
-  border-color: rgba(251, 146, 60, 0.15) !important;
+  border-color: rgba(249, 115, 22, 0.15) !important;
   color: #f0e0d0 !important;
 }
 
-.cci-cypher-panel input[type="text"],
-.cci-cypher-panel input[type="number"] {
-  background: rgba(0, 0, 0, 0.35) !important;
-  border: 1px solid rgba(251, 146, 60, 0.15) !important;
-  color: #f0e0d0 !important;
+/* Specific badge colors */
+.cci-cypher-panel .cci-cypher-form-badge {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: #fb923c !important;
+  border: 1px solid rgba(249, 115, 22, 0.3) !important;
+}
+.cci-cypher-panel .cci-cypher-type-badge {
+  background: rgba(180, 83, 9, 0.15) !important;
+  color: #fdba74 !important;
+  border: 1px solid rgba(180, 83, 9, 0.3) !important;
 }
 
-.cci-cypher-panel input[type="number"] {
-  color: #ffffff !important;
-}
-
+/* Dropdown styling */
 .cci-cypher-panel select {
-  background: rgba(0, 0, 0, 0.35) !important;
-  border: 1px solid rgba(251, 146, 60, 0.15) !important;
-  color: #f0e0d0 !important;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23fb923c' fill-opacity='0.6' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-color: rgba(0, 0, 0, 0.4) !important;
   background-repeat: no-repeat !important;
   background-position: right 6px center !important;
-  padding-right: 20px !important;
-}
-
-.cci-cypher-panel .cci-field-pair select,
-.cci-cypher-panel .cci-stat select {
-  background: rgba(0, 0, 0, 0.45) !important;
-  border: 1px solid rgba(251, 146, 60, 0.25) !important;
-  color: #ffffff !important;
-}
-
-.cci-cypher-panel .cci-field-pair select option,
-.cci-cypher-panel .cci-stat select option {
-  background: #1f1408 !important;
+  border: 1px solid rgba(249, 115, 22, 0.2) !important;
   color: #f0e0d0 !important;
 }
-
-.cci-cypher-panel select option,
-.cci-cypher-panel select optgroup {
+.cci-cypher-panel select option {
   background: #2a1a0a !important;
   color: #f0e0d0 !important;
 }
 
+/* Rarity badge */
 .cci-cypher-panel .cci-rarity-badge {
-  border-color: color-mix(in srgb, var(--rarity-color, #fb923c) 30%, transparent) !important;
+  box-shadow: 0 0 6px rgba(249, 115, 22, 0.15) !important;
 }
 
-.cci-cypher-panel .cci-cypher-form-badge {
-  color: #fb923c !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-  font-size: 0.75em !important;
-}
-
-.cci-cypher-panel .cci-cypher-type-badge {
-  color: #fdba74 !important;
-  font-weight: 600 !important;
-  font-size: 0.8em !important;
-}
-
-.cci-cypher-panel .cci-price-row input {
-  color: #fb923c !important;
-}
-
+/* Size badge */
 .cci-cypher-panel .cci-size-badge {
-  background: rgba(0, 0, 0, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.05) !important;
-  color: #f97316 !important;
+  background: rgba(200, 200, 200, 0.1) !important;
+  color: #d0d0d0 !important;
+  border: 1px solid rgba(200, 200, 200, 0.2) !important;
 }
 
+/* Price coin */
+.cci-cypher-panel .cci-coin-select {
+  background: rgba(249, 115, 22, 0.1) !important;
+  border-color: rgba(249, 115, 22, 0.2) !important;
+  color: #fb923c !important;
+}
+
+/* Position badge */
+.cci-cypher-panel .cci-position-badge {
+  background: rgba(120, 113, 108, 0.15) !important;
+  color: #a8a29e !important;
+  border: 1px solid rgba(120, 113, 108, 0.25) !important;
+}
+
+/* Level input */
+.cci-cypher-panel .cci-level-input {
+  color: #fb923c !important;
+}
+
+/* Flavor text */
+.cci-cypher-panel .cci-flavor-text {
+  color: #a0a0a0 !important;
+  border-left-color: rgba(249, 115, 22, 0.3) !important;
+}
+
+/* WYSIWYG Toolbar */
 .cci-cypher-panel .cci-wysiwyg-toolbar {
   background: rgba(0, 0, 0, 0.3) !important;
-  border-color: rgba(251, 146, 60, 0.15) !important;
+  border-color: rgba(249, 115, 22, 0.15) !important;
 }
-
 .cci-cypher-panel .cci-wysiwyg-toolbar button {
-  color: #fb923c !important;
+  color: rgba(251, 146, 60, 0.7) !important;
 }
-
 .cci-cypher-panel .cci-wysiwyg-toolbar button:hover {
-  background: rgba(251, 146, 60, 0.2) !important;
-  color: #f0e0d0 !important;
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: #fb923c !important;
 }
-
-.cci-cypher-panel .cci-wysiwyg {
-  background: rgba(0, 0, 0, 0.35) !important;
-  border-color: rgba(251, 146, 60, 0.15) !important;
-  color: #f0e0d0 !important;
-}
-
-.cci-cypher-panel .cci-flavor-label {
+.cci-cypher-panel .cci-wysiwyg-toolbar button.active {
+  background: rgba(249, 115, 22, 0.25) !important;
   color: #fb923c !important;
 }
 
-.cci-cypher-panel .cci-flavor-text input {
-  color: #fb923c !important;
-  border-color: rgba(251, 146, 60, 0.15) !important;
+/* Description */
+.cci-cypher-panel .cci-description-textarea,
+.cci-cypher-panel .cci-description-display {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(249, 115, 22, 0.15) !important;
+  color: #e8e0d8 !important;
 }
 
-/* Form description hint */
-.cci-cypher-panel .cci-form-desc-stat {
-  grid-column: 1 / -1;
+/* Scrollbar */
+.cci-cypher-panel ::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.25) !important;
+}
+.cci-cypher-panel ::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.4) !important;
 }
 
-.cci-cypher-panel .cci-form-desc-stat label {
-  color: #f97316 !important;
-}
-
-.cci-cypher-panel .cci-form-description {
-  background: rgba(0, 0, 0, 0.25) !important;
-  border: 1px solid rgba(251, 146, 60, 0.1) !important;
-  border-radius: 6px !important;
-  color: #fdba74 !important;
-  font-size: 0.8em !important;
-  padding: 8px 10px !important;
-  line-height: 1.4 !important;
-  font-style: italic !important;
-}
-
-/* Level input styling */
-.cci-cypher-panel .cci-level-input {
-  background: rgba(0, 0, 0, 0.35) !important;
-  border: 1px solid rgba(251, 146, 60, 0.15) !important;
-  border-radius: 6px !important;
-  color: #ffffff !important;
-  font-size: 0.85em !important;
-  padding: 5px 8px !important;
-  height: 32px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-.cci-cypher-panel .cci-level-input::placeholder {
-  color: rgba(251, 146, 60, 0.3) !important;
-}
-
-.cci-cypher-panel .cci-level-input:focus {
-  border-color: #fb923c !important;
-  outline: none !important;
-}
-
-/* Mid row background for cypher */
-.cci-cypher-panel .cci-mid-row {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(251, 146, 60, 0.15);
-  border-radius: 10px;
-  padding: 10px;
-}
-
-/* Drop hint color */
-.cci-cypher-panel .cci-drop-hint {
-  color: rgba(251, 146, 60, 0.4) !important;
-}
-
-/* Special dropzone */
-.cci-cypher-panel .cci-special-dropzone {
-  border-color: rgba(251, 146, 60, 0.15) !important;
-}
-
-.cci-cypher-panel .cci-special-dropzone.cci-dragover {
-  border-color: #fb923c !important;
-  background: rgba(251, 146, 60, 0.1) !important;
-}
-
-.cci-cypher-panel .cci-ability-icon {
-  border-color: rgba(251, 146, 60, 0.15) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-}
-
-.cci-cypher-panel .cci-ability-icon:hover {
-  border-color: #fb923c !important;
-  box-shadow: 0 4px 12px rgba(251, 146, 60, 0.15) !important;
+/* Player view adjustments */
+.cci-cypher-panel.cci-player-view .cci-image-glow {
+  background: rgba(249, 115, 22, 0.2);
 }

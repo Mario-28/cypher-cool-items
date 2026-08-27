@@ -2,7 +2,7 @@
   "id": "cypher-cool-items",
   "title": "Cypher Cool Items",
   "description": "Complete visual rework of Cypher System item sheets with dark fantasy styling and enhanced item properties.",
-  "version": "2.0.19",
+  "version": "2.0.35",
   "compatibility": {
     "minimum": "14",
     "verified": "14.360"

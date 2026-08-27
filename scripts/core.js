@@ -293,7 +293,7 @@ function buildGenericPanel(item, isGM) {
   const size = data.size || 'medium';
   const flavor = data.flavor || '';
   const specialAbilities = data.specialAbilities || [];
-  const description = sys.description || '';
+  const description = data.description || sys.description || '';
 
   const panel = document.createElement('div');
   panel.className = 'cci-cool-panel';
@@ -466,6 +466,17 @@ export function opts(config, selected) {
   }).join('');
 }
 
+function updateNativeForm(panel, updates) {
+  const content = panel?.closest('.window-content');
+  if (!content) return;
+  const form = content.querySelector('form');
+  if (!form) return;
+  for (const [key, value] of Object.entries(updates)) {
+    const input = form.querySelector(`[name="${key}"]`);
+    if (input) input.value = value;
+  }
+}
+
 function bindCommonEvents(panel, item, isGM) {
   // === NAME, SELECT, INPUT ===
   panel.querySelectorAll('[data-prop], [name="name"]').forEach(input => {
@@ -478,8 +489,48 @@ function bindCommonEvents(panel, item, isGM) {
           if (isNaN(val)) val = 0;
         }
         await CoolItemData.set(item, input.dataset.prop, val);
+
+        // === SKILL SYNC: Training ↔ Rating ===
+        // Cypher System v2 canonical field: system.settings.level
+        if (item.type === 'skill' && input.dataset.prop === 'skillTraining') {
+          const trainingToLevel = { inability: -1, practiced: 0, trained: 1, specialized: 2 };
+          const trainingToBasic = { inability: 'Inability', practiced: 'Practiced', trained: 'Trained', specialized: 'Specialized' };
+          const level = trainingToLevel[val];
+          const basicRating = trainingToBasic[val];
+          const update = {};
+          // Canonical Cypher System v2 field
+          if (level !== undefined) update['system.settings.level'] = level;
+          // Keep backward-compat fields
+          if (level !== undefined) update['system.rating'] = level;
+          if (basicRating !== undefined) update['system.basic.rating'] = basicRating;
+          if (Object.keys(update).length > 0) {
+            try {
+              await item.update(update, { render: false });
+              // Sync hidden native form so close/submit doesn't overwrite
+              updateNativeForm(panel, update);
+              // Re-render actor sheet so Skill tab shows updated rating
+              if (item.actor?.sheet?.rendered) {
+                item.actor.sheet.render(false);
+              }
+            } catch (err) {
+              console.error('[CCI] Skill training sync failed:', err);
+            }
+          }
+        }
+        // === SKILL SYNC: Stat ===
+        // Cypher System v2 canonical field: system.settings.pool
+        if (item.type === 'skill' && input.dataset.prop === 'skillStat') {
+          try {
+            const update = { 'system.settings.pool': val, 'system.stat': val };
+            await item.update(update, { render: false });
+            updateNativeForm(panel, update);
+            if (item.actor?.sheet?.rendered) item.actor.sheet.render(false);
+          } catch (err) {
+            console.error('[CCI] Skill stat sync failed:', err);
+          }
+        }
       } else if (input.name === 'name') {
-        await item.update({ name: input.value });
+        await item.update({ name: input.value }, { render: false });
       }
     });
   });
@@ -497,7 +548,51 @@ function bindCommonEvents(panel, item, isGM) {
   const wysiwyg = panel.querySelector('.cci-wysiwyg[data-prop="description"]');
   if (wysiwyg) {
     wysiwyg.addEventListener('blur', async () => {
-      await CoolItemData.set(item, 'description', wysiwyg.innerHTML);
+      const html = wysiwyg.innerHTML;
+      await CoolItemData.set(item, 'description', html);
+      // === SKILL SYNC: Description → native ===
+      if (item.type === 'skill') {
+        try {
+          await item.update({ 'system.description': html }, { render: false });
+          if (item.actor?.sheet?.rendered) item.actor.sheet.render(false);
+        } catch (err) {
+          console.error('[CCI] Skill description sync failed:', err);
+        }
+      }
+    });
+  }
+
+  // === IMAGE CLICK (GM only) ===
+  const itemImg = panel.querySelector('.cci-item-img');
+  if (itemImg && isGM) {
+    itemImg.style.cursor = 'pointer';
+    itemImg.addEventListener('click', async () => {
+      try {
+        const current = item.img || 'icons/svg/mystery-man.svg';
+        const FP = foundry.applications?.apps?.FilePicker || FilePicker;
+        const fp = new FP({
+          type: 'image',
+          current: current,
+          callback: async (path) => {
+            if (!path) return;
+            try {
+              if (item.actor) {
+                await item.actor.updateEmbeddedDocuments('Item', [{ _id: item.id, img: path }]);
+              } else {
+                await item.update({ img: path });
+              }
+              ui.notifications.info('Item image updated.');
+            } catch (err) {
+              console.error('[CCI] Image update failed:', err);
+              ui.notifications.error('Failed to update image: ' + (err.message || err));
+            }
+          }
+        });
+        await fp.render(true);
+      } catch (err) {
+        console.error('[CCI] FilePicker failed:', err);
+        ui.notifications.error('Could not open image picker.');
+      }
     });
   }
 
@@ -575,39 +670,54 @@ Hooks.on('renderItemSheet', (app, html, data) => {
 
   let el = html instanceof HTMLElement ? html : html?.[0];
   if (!el) return;
-  if (el.querySelector('.cci-cool-panel')) return;
 
   const isGM = game.user.isGM;
-  const panel = buildPanel(item, isGM);
   const actorId = getActorIdFromApp(app);
-
   const content = el.querySelector('.window-content');
-  if (content) {
-    const form = content.querySelector('form');
-    if (form) { form.style.display = 'none'; form.dataset.cciNative = 'true'; }
+  if (!content) return;
+
+  // Always hide the native form
+  const form = content.querySelector('form');
+  if (form) { form.style.display = 'none'; form.dataset.cciNative = 'true'; }
+
+  // Check if panel already exists — if so, don't rebuild (preserve focus & state)
+  let panel = content.querySelector('.cci-cool-panel');
+  if (!panel) {
+    panel = buildPanel(item, isGM);
     content.insertBefore(panel, content.firstChild);
+    bindEvents(panel, item, isGM);
+
+    // One-time auto-size on first open
+    const saved = getSavedPosition(actorId);
+    if (!saved && !app._cciSized) {
+      app._cciSized = true;
+      const header = el.querySelector('.window-header');
+      const headerH = header ? header.offsetHeight : 30;
+      const contentH = content.scrollHeight;
+      const totalH = headerH + contentH + 8;
+      const maxH = window.innerHeight - 80;
+      app.setPosition({
+        height: Math.max(Math.min(totalH, maxH), 400),
+        width: 350
+      });
+    }
+  } else {
+    // Panel exists — sync image if it changed (e.g. after image picker)
+    const imgEl = panel.querySelector('.cci-item-img');
+    const bgEl = panel.querySelector('.cci-bg-image');
+    const currentSrc = imgEl?.src;
+    const newSrc = item.img || 'icons/svg/mystery-man.svg';
+    // Compare pathname to handle absolute vs relative URLs
+    const currentPath = currentSrc ? new URL(currentSrc, window.location.href).pathname.replace(/^\//, '') : '';
+    const newPath = new URL(newSrc, window.location.href).pathname.replace(/^\//, '');
+    if (currentPath !== newPath) {
+      if (imgEl) imgEl.src = newSrc;
+      if (bgEl) bgEl.style.backgroundImage = `url("${newSrc}")`;
+    }
   }
 
   applyPosition(app, actorId);
   trackPosition(app, actorId);
-
-  // One-time auto-size on first open: set a sensible default height only if no saved position exists
-  const actorIdForPos = getActorIdFromApp(app);
-  const saved = getSavedPosition(actorIdForPos);
-  if (!saved && !app._cciSized) {
-    app._cciSized = true;
-    const header = el.querySelector('.window-header');
-    const headerH = header ? header.offsetHeight : 30;
-    const contentH = content ? content.scrollHeight : 400;
-    const totalH = headerH + contentH + 8;
-    const maxH = window.innerHeight - 80;
-    app.setPosition({
-      height: Math.max(Math.min(totalH, maxH), 400),
-      width: 350
-    });
-  }
-
-  bindEvents(panel, item, isGM);
 });
 
 console.log(`${MODULE_ID} | core loaded.`);

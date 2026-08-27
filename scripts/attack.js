@@ -14,7 +14,7 @@ export function buildAttackPanel(item, isGM) {
   const coin = data.coin || 'gp';
   const size = data.size || 'medium';
   const flavor = data.flavor || '';
-  const description = sys.description || '';
+  const description = data.description || sys.description || '';
 
   const attackType = data.attackType || 'melee';
   const level = data.level ?? '';
