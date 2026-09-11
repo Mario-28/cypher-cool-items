@@ -149,3 +149,191 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* ── 3-column stat grid (Stat | Training | Combat) ── */
+.cci-skill-stats-3col {
+  grid-template-columns: 1fr 1fr 1fr !important;
+}
+
+/* ── Combat Use Toggle ── */
+.cci-skill-combat-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cci-skill-combat-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.cci-skill-combat-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #ef4444;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+}
+.cci-skill-combat-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ef4444;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.15s ease;
+}
+.cci-skill-combat-toggle input[type="checkbox"]:checked + .cci-skill-combat-label {
+  color: #f87171;
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+.cci-skill-combat-toggle input[type="checkbox"]:not(:checked) + .cci-skill-combat-label {
+  color: #64748b;
+}
+
+/* ── Notes Row ── */
+.cci-notes-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* ── Tiny + button (initial state) ── */
+.cci-skill-note-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 4px;
+  color: #93c5fd;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  padding: 0;
+}
+.cci-skill-note-btn:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.45);
+  color: #bfdbfe;
+}
+
+/* ── Edit area (textarea + save) ── */
+.cci-skill-notes-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: cci-note-in 0.2s ease-out;
+}
+.cci-skill-notes-edit.cci-hidden {
+  display: none !important;
+}
+.cci-skill-notes-edit textarea {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  border-radius: 8px !important;
+  color: #e8e8f0 !important;
+  font-size: 12px !important;
+  font-family: inherit !important;
+  padding: 10px 12px !important;
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.5;
+  outline: none !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.cci-skill-notes-edit textarea:focus {
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.15) !important;
+}
+.cci-skill-notes-edit textarea::placeholder {
+  color: rgba(138, 155, 176, 0.5) !important;
+}
+
+/* ── Save button ── */
+.cci-skill-save-btn {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 6px;
+  color: #93c5fd;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.cci-skill-save-btn:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.5);
+  color: #bfdbfe;
+}
+
+/* ── Display area (saved note + hover edit) ── */
+.cci-skill-notes-display {
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  animation: cci-note-in 0.2s ease-out;
+}
+.cci-skill-notes-display.cci-hidden {
+  display: none !important;
+}
+.cci-skill-notes-text {
+  color: #c8d4e8;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding-right: 28px; /* room for edit btn */
+  min-height: 20px;
+}
+
+/* ── Hover-reveal edit button ── */
+.cci-skill-edit-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 4px;
+  color: #93c5fd;
+  font-size: 9px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease;
+  font-family: inherit;
+  padding: 0;
+}
+.cci-skill-notes-display:hover .cci-skill-edit-btn {
+  opacity: 1;
+}
+.cci-skill-edit-btn:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.45);
+  color: #bfdbfe;
+}
+
+@keyframes cci-note-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

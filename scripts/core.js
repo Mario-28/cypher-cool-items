@@ -529,6 +529,29 @@ function bindCommonEvents(panel, item, isGM) {
             console.error('[CCI] Skill stat sync failed:', err);
           }
         }
+
+        // === ATTACK SYNC: Level / Damage / AttackBonus → native fields ===
+        if (item.type === 'attack') {
+          const attackUpdates = {};
+          if (input.dataset.prop === 'level') {
+            attackUpdates['system.basic.level'] = val;
+          }
+          if (input.dataset.prop === 'damage') {
+            attackUpdates['system.basic.damage'] = val;
+          }
+          if (input.dataset.prop === 'attackBonus') {
+            attackUpdates['system.basic.attackBonus'] = val;
+          }
+          if (Object.keys(attackUpdates).length > 0) {
+            try {
+              await item.update(attackUpdates, { render: false });
+              updateNativeForm(panel, attackUpdates);
+              if (item.actor?.sheet?.rendered) item.actor.sheet.render(false);
+            } catch (err) {
+              console.error('[CCI] Attack stat sync failed:', err);
+            }
+          }
+        }
       } else if (input.name === 'name') {
         await item.update({ name: input.value }, { render: false });
       }

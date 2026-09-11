@@ -85,6 +85,8 @@ export function buildSkillPanel(item, isGM) {
 
   const skillType = data.skillType || 'physical';
   const flavor = data.flavor || '';
+  const skillCombatUse = data.skillCombatUse ?? false;
+  const skillNotes = data.skillNotes || '';
 
   // Description: CCI priority, fallback to Cypher System
   const description = data.description || sys.description || '';
@@ -125,11 +127,11 @@ export function buildSkillPanel(item, isGM) {
   `;
   panel.appendChild(topRow);
 
-  // === STAT + TRAINING ROW ===
+  // === STAT + TRAINING + COMBAT ROW ===
   const statRow = document.createElement('div');
   statRow.className = 'cci-row cci-stat-row';
   statRow.innerHTML = `
-    <div class="cci-stats-block cci-skill-stats">
+    <div class="cci-stats-block cci-skill-stats cci-skill-stats-3col">
       <div class="cci-stat">
         <label>Stat</label>
         ${isGM
@@ -143,6 +145,13 @@ export function buildSkillPanel(item, isGM) {
           ? `<select data-prop="skillTraining">${opts(CCI_CONFIG.skillTraining, skillTraining)}</select>`
           : `<div class="cci-readonly cci-skill-training-badge">${CCI_CONFIG.skillTraining[skillTraining]}</div>`
         }
+      </div>
+      <div class="cci-stat cci-skill-combat-wrap">
+        <label>Combat Use</label>
+        <label class="cci-skill-combat-toggle">
+          <input type="checkbox" data-prop="skillCombatUse" ${skillCombatUse ? 'checked' : ''}>
+          <span class="cci-skill-combat-label">COMBAT</span>
+        </label>
       </div>
     </div>
   `;
@@ -193,10 +202,87 @@ export function buildSkillPanel(item, isGM) {
   }
   if (isGM || flavor) panel.appendChild(flavorRow);
 
+  // === NOTES ROW ===
+  const hasNote = !!skillNotes.trim();
+  const notesRow = document.createElement('div');
+  notesRow.className = 'cci-row cci-notes-row';
+  notesRow.innerHTML = `
+    <button type="button" class="cci-skill-note-btn ${hasNote ? 'cci-hidden' : ''}" data-action="openNote">
+      <i class="fas fa-plus"></i>
+    </button>
+    <div class="cci-skill-notes-edit cci-hidden">
+      <textarea data-prop="skillNotes" placeholder="Notes about this skill...">${skillNotes}</textarea>
+      <button type="button" class="cci-skill-save-btn" data-action="saveNote">
+        <i class="fas fa-save"></i> SAVE
+      </button>
+    </div>
+    <div class="cci-skill-notes-display ${hasNote ? '' : 'cci-hidden'}">
+      <div class="cci-skill-notes-text">${skillNotes}</div>
+      <button type="button" class="cci-skill-edit-btn" data-action="editNote" title="Edit note">
+        <i class="fas fa-pen"></i>
+      </button>
+    </div>
+  `;
+  panel.appendChild(notesRow);
+
   return panel;
 }
 
 export function bindSkillEvents(panel, item, isGM) {
-  // Skill-specific events are now handled by bindCommonEvents in core.js
-  // which includes sync to Cypher System native fields (rating, stat, description)
+  // === COMBAT USE CHECKBOX ===
+  const combatToggle = panel.querySelector('[data-prop="skillCombatUse"]');
+  if (combatToggle) {
+    combatToggle.addEventListener('change', async (e) => {
+      const val = e.target.checked;
+      await CoolItemData.set(item, 'skillCombatUse', val);
+    });
+  }
+
+  // === NOTES: STATE-BASED UI ===
+  const noteBtn      = panel.querySelector('[data-action="openNote"]');
+  const editArea     = panel.querySelector('.cci-skill-notes-edit');
+  const displayArea  = panel.querySelector('.cci-skill-notes-display');
+  const saveBtn      = panel.querySelector('[data-action="saveNote"]');
+  const editBtn      = panel.querySelector('[data-action="editNote"]');
+  const textarea     = panel.querySelector('[data-prop="skillNotes"]');
+  const noteText     = panel.querySelector('.cci-skill-notes-text');
+
+  const showEdit = () => {
+    if (noteBtn)     noteBtn.classList.add('cci-hidden');
+    if (editArea)    editArea.classList.remove('cci-hidden');
+    if (displayArea) displayArea.classList.add('cci-hidden');
+  };
+
+  const showDisplay = (text) => {
+    if (noteBtn)     noteBtn.classList.add('cci-hidden');
+    if (editArea)    editArea.classList.add('cci-hidden');
+    if (displayArea) displayArea.classList.remove('cci-hidden');
+    if (noteText)    noteText.textContent = text;
+  };
+
+  // Open note (from tiny + button)
+  if (noteBtn) {
+    noteBtn.addEventListener('click', showEdit);
+  }
+
+  // Save note
+  if (saveBtn) {
+    saveBtn.addEventListener('click', async () => {
+      const text = textarea?.value?.trim() || '';
+      await CoolItemData.set(item, 'skillNotes', text);
+      if (text) {
+        showDisplay(text);
+      } else {
+        // Empty → back to initial state
+        if (noteBtn)     noteBtn.classList.remove('cci-hidden');
+        if (editArea)    editArea.classList.add('cci-hidden');
+        if (displayArea) displayArea.classList.add('cci-hidden');
+      }
+    });
+  }
+
+  // Edit note (from hover-reveal button)
+  if (editBtn) {
+    editBtn.addEventListener('click', showEdit);
+  }
 }
