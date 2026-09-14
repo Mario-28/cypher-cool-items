@@ -520,3 +520,238 @@
   font-size: 0.85em;
   color: #e0e0e0;
 }
+
+/* ============================================
+   EFFECTS SECTION
+   ============================================ */
+.cci-effects-row > label {
+  color: #f87171 !important;
+}
+
+.cci-effects-dropzone {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 48px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px dashed rgba(220, 38, 38, 0.25);
+  border-radius: 8px;
+  align-items: stretch;
+  transition: all 0.2s ease;
+}
+
+.cci-effects-dropzone.cci-dragover {
+  border-color: #ef4444;
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.cci-effect-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 5px 8px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: 6px;
+}
+
+.cci-effect-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.cci-effect-label {
+  font-size: 0.6em;
+  font-weight: 600;
+  color: rgba(248, 113, 113, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cci-effect-header .cci-remove-effect {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(200, 50, 50, 0.8);
+  border: none;
+  color: white;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.cci-effect-header:hover .cci-remove-effect {
+  opacity: 1;
+}
+
+.cci-effect-fields {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.cci-effect-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cci-effect-icon:hover {
+  border-color: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.cci-effect-name {
+  font-size: 0.8em;
+  color: #e0e0e0;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.cci-effect-item select {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  border-radius: 4px;
+  color: #000000 !important;
+  font-size: 0.7em;
+  padding: 2px 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cci-effect-item select option {
+  color: #000000 !important;
+  background: #ffffff;
+}
+
+.cci-effect-item select:focus {
+  border-color: #ef4444;
+  outline: none;
+}
+
+.cci-effect-tag {
+  font-size: 0.7em;
+  padding: 1px 5px;
+  background: rgba(220, 38, 38, 0.2);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 3px;
+  color: #f87171;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ---- Resistance + Difficulty row ---- */
+.cci-effect-resistance-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  padding-top: 3px;
+  border-top: 1px solid rgba(220, 38, 38, 0.12);
+}
+
+.cci-effect-res-label {
+  font-size: 0.55em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(139, 147, 168, 0.7);
+  white-space: nowrap;
+}
+
+.cci-effect-resistance-row select {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 4px;
+  color: #000000 !important;
+  font-size: 0.65em;
+  padding: 1px 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cci-effect-resistance-row select option {
+  color: #000000 !important;
+  background: #ffffff;
+}
+
+.cci-effect-resistance-row select:focus {
+  border-color: #ef4444;
+  outline: none;
+}
+}
+
+/* Effect tooltip */
+.cci-effect-tooltip {
+  position: fixed;
+  z-index: 9999;
+  max-width: 280px;
+  padding: 10px 12px;
+  background: #1a0a0a;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.cci-effect-tooltip.cci-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cci-effect-tt-header {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #ef4444;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.cci-effect-tt-desc {
+  font-size: 0.8em;
+  color: #c0c0c0;
+  line-height: 1.4;
+}
+
+/* ============================================
+   DEFENSE ROLL — Red Theme
+   ============================================ */
+.cci-attack-panel .cci-defense-roll-row > label {
+  color: #f87171 !important;
+}
+
+.cci-attack-panel .cci-defense-roll-check.cci-checked {
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.08);
+}
+
+.cci-attack-panel .cci-defense-roll-check.cci-checked .cci-defense-roll-icon {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.cci-attack-panel .cci-defense-roll-check.cci-checked .cci-defense-roll-label {
+  color: #f87171;
+}

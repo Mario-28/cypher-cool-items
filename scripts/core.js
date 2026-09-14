@@ -64,6 +64,16 @@ export const CCI_CONFIG = {
   ammoType: {
     mundane: 'Mundane', magical: 'Magical', other: 'Other'
   },
+  effectTarget: {
+    pc: 'PC',
+    npc: 'NPC'
+  },
+  effectTrigger: {
+    automatic: 'Automatic',
+    resistanceRoll: 'Resistance Roll',
+    attributeDamage: 'On Attribute Damage',
+    attributeDamageResistance: 'On Attribute Damage Resistance Roll'
+  },
   armorType: {
     cloth_padded: 'Cloth / Padded',
     leather: 'Leather',
@@ -229,8 +239,13 @@ function applyPosition(app, actorId) {
 }
 
 function trackPosition(app, actorId) {
+  if (app._cciTracked) return;
+  app._cciTracked = true;
+
   const el = app.element?.[0] || app.element;
   if (!el) return;
+
+  // Save position on close via a one-time wrapper
   const originalClose = app.close.bind(app);
   app.close = async function(...args) {
     const pos = app.position;
@@ -239,6 +254,7 @@ function trackPosition(app, actorId) {
     }
     return originalClose(...args);
   };
+
   const header = el.querySelector('.window-header');
   if (!header) return;
   let wasDragging = false;
@@ -530,6 +546,28 @@ function bindCommonEvents(panel, item, isGM) {
           }
         }
 
+        // === ARMOR SYNC: Rating / Penalty → native fields ===
+        if (item.type === 'armor') {
+          const armorUpdates = {};
+          if (input.dataset.prop === 'armorRating') {
+            armorUpdates['system.basic.rating'] = val;
+            armorUpdates['system.rating'] = val;
+          }
+          if (input.dataset.prop === 'armorPenalty') {
+            armorUpdates['system.basic.penalty'] = val;
+            armorUpdates['system.penalty'] = val;
+          }
+          if (Object.keys(armorUpdates).length > 0) {
+            try {
+              await item.update(armorUpdates, { render: false });
+              updateNativeForm(panel, armorUpdates);
+              if (item.actor?.sheet?.rendered) item.actor.sheet.render(false);
+            } catch (err) {
+              console.error('[CCI] Armor stat sync failed:', err);
+            }
+          }
+        }
+
         // === ATTACK SYNC: Level / Damage / AttackBonus → native fields ===
         if (item.type === 'attack') {
           const attackUpdates = {};
@@ -691,29 +729,36 @@ Hooks.on('renderItemSheet', (app, html, data) => {
   const item = app.item || app.document;
   if (!item) return;
 
-  let el = html instanceof HTMLElement ? html : html?.[0];
+  // Use the live DOM element — app.element is always the real rendered node.
+  // The 'html' argument can be a stale jQuery wrapper on re-renders.
+  const el = app.element instanceof HTMLElement ? app.element
+           : app.element?.[0] instanceof HTMLElement ? app.element[0]
+           : (html instanceof HTMLElement ? html : html?.[0]);
   if (!el) return;
 
-  const isGM = game.user.isGM;
+  const isGM  = game.user.isGM;
   const actorId = getActorIdFromApp(app);
   const content = el.querySelector('.window-content');
   if (!content) return;
 
-  // Always hide the native form
+  // Hide native form
   const form = content.querySelector('form');
   if (form) { form.style.display = 'none'; form.dataset.cciNative = 'true'; }
 
-  // Check if panel already exists — if so, don't rebuild (preserve focus & state)
-  let panel = content.querySelector('.cci-cool-panel');
-  if (!panel) {
-    panel = buildPanel(item, isGM);
-    content.insertBefore(panel, content.firstChild);
-    bindEvents(panel, item, isGM);
+  // Remove old panel (re-render = fresh DOM, old one is orphaned)
+  const oldPanel = content.querySelector('.cci-cool-panel');
+  if (oldPanel) oldPanel.remove();
 
-    // One-time auto-size on first open
+  // Build & inject fresh panel
+  const panel = buildPanel(item, isGM);
+  content.insertBefore(panel, content.firstChild);
+  bindEvents(panel, item, isGM);
+
+  // One-time auto-size
+  if (!app._cciSized) {
+    app._cciSized = true;
     const saved = getSavedPosition(actorId);
-    if (!saved && !app._cciSized) {
-      app._cciSized = true;
+    if (!saved) {
       const header = el.querySelector('.window-header');
       const headerH = header ? header.offsetHeight : 30;
       const contentH = content.scrollHeight;
@@ -723,19 +768,6 @@ Hooks.on('renderItemSheet', (app, html, data) => {
         height: Math.max(Math.min(totalH, maxH), 400),
         width: 350
       });
-    }
-  } else {
-    // Panel exists — sync image if it changed (e.g. after image picker)
-    const imgEl = panel.querySelector('.cci-item-img');
-    const bgEl = panel.querySelector('.cci-bg-image');
-    const currentSrc = imgEl?.src;
-    const newSrc = item.img || 'icons/svg/mystery-man.svg';
-    // Compare pathname to handle absolute vs relative URLs
-    const currentPath = currentSrc ? new URL(currentSrc, window.location.href).pathname.replace(/^\//, '') : '';
-    const newPath = new URL(newSrc, window.location.href).pathname.replace(/^\//, '');
-    if (currentPath !== newPath) {
-      if (imgEl) imgEl.src = newSrc;
-      if (bgEl) bgEl.style.backgroundImage = `url("${newSrc}")`;
     }
   }
 

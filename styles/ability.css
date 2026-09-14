@@ -845,6 +845,21 @@
   font-style: italic;
 }
 
+/* === GM-ONLY FIELDS === */
+.cci-gm-only label {
+  color: #c084fc !important;
+  font-size: 0.72em !important;
+  letter-spacing: 0.06em;
+}
+.cci-gm-only input {
+  border-color: rgba(192, 132, 252, 0.35) !important;
+  background: rgba(192, 132, 252, 0.08) !important;
+}
+.cci-gm-only input:focus {
+  border-color: rgba(192, 132, 252, 0.6) !important;
+  box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.15) !important;
+}
+
 /* === SCROLLBAR === */
 .app.sheet.item ::-webkit-scrollbar { width: 6px; }
 .app.sheet.item ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 3px; }
@@ -855,3 +870,24 @@
    AMMO PANEL — Gray Theme
    ============================================ */
 
+
+/* ============================================
+   DEFENSE ROLL — Blue Theme
+   ============================================ */
+.cci-ability-panel .cci-defense-roll-row > label {
+  color: #60a5fa !important;
+}
+
+.cci-ability-panel .cci-defense-roll-check.cci-checked {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.08);
+}
+
+.cci-ability-panel .cci-defense-roll-check.cci-checked .cci-defense-roll-icon {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.cci-ability-panel .cci-defense-roll-check.cci-checked .cci-defense-roll-label {
+  color: #60a5fa;
+}

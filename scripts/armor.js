@@ -6,8 +6,11 @@ export function buildArmorPanel(item, isGM) {
 
   const rarity = data.rarity || 'common';
   const armorType = data.armorType || 'leather';
-  const armorRating = data.armorRating ?? '';
+  // Armor rating: CCI flag first, then fall back to native Cypher System field
+  const nativeRating = sys.basic?.rating ?? sys.rating ?? '';
+  const armorRating = data.armorRating ?? nativeRating;
   const armorPenalty = data.armorPenalty ?? '';
+  const armorModNpc = data.armorModNpc ?? '';
   const hasDurability = data.hasDurability !== false;
   const durability = data.durability ?? 100;
   const price = data.price ?? '';
@@ -82,6 +85,13 @@ export function buildArmorPanel(item, isGM) {
     </div>
   `;
 
+  const armorModNpcHtml = isGM ? `
+    <div class="cci-stat cci-gm-only">
+      <label>Armor Mod NPC</label>
+      <input type="number" data-prop="armorModNpc" value="${armorModNpc}" min="0" placeholder="—" class="cci-armor-mod-npc">
+    </div>
+  ` : '';
+
   const priceHtml = `
     <div class="cci-stat">
       <label>Price</label>
@@ -110,7 +120,7 @@ export function buildArmorPanel(item, isGM) {
     </div>
   `;
 
-  midRow.innerHTML = `<div class="cci-stats-block">${ratingHtml}${penaltyHtml}${priceHtml}${sizeHtml}</div>`;
+  midRow.innerHTML = `<div class="cci-stats-block">${ratingHtml}${penaltyHtml}${armorModNpcHtml}${priceHtml}${sizeHtml}</div>`;
   panel.appendChild(midRow);
 
   if (isGM || hasDurability) {

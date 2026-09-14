@@ -230,6 +230,33 @@ export function buildAttackPanel(item, isGM) {
 
   panel.appendChild(attackSection);
 
+  /* === DEFENSE ROLL (GM only) === */
+  const defenseRoll = data.defenseRoll || [];
+  if (isGM) {
+    const defenseRollRow = document.createElement('div');
+    defenseRollRow.className = 'cci-row cci-defense-roll-row';
+    const poolOpts = [
+      { key: 'might', label: 'Might', icon: 'fa-fist-raised' },
+      { key: 'speed', label: 'Speed', icon: 'fa-running' },
+      { key: 'intellect', label: 'Intellect', icon: 'fa-brain' },
+      { key: 'effort', label: 'Effort', icon: 'fa-bolt' },
+      { key: 'xp', label: 'XP', icon: 'fa-star' }
+    ];
+    defenseRollRow.innerHTML = `
+      <label><i class="fas fa-shield-alt"></i> Defense Roll</label>
+      <div class="cci-defense-roll-checkboxes">
+        ${poolOpts.map(o => `
+          <label class="cci-defense-roll-check ${defenseRoll.includes(o.key) ? 'cci-checked' : ''}" data-key="${o.key}">
+            <input type="checkbox" data-defense-roll="${o.key}" ${defenseRoll.includes(o.key) ? 'checked' : ''}>
+            <span class="cci-defense-roll-icon"><i class="fas ${o.icon}"></i></span>
+            <span class="cci-defense-roll-label">${o.label}</span>
+          </label>
+        `).join('')}
+      </div>
+    `;
+    panel.appendChild(defenseRollRow);
+  }
+
   /* === SPECIAL ABILITIES === */
   const specialAbilities = data.specialAbilities || [];
   if (isGM || specialAbilities.length > 0) {
@@ -250,6 +277,56 @@ export function buildAttackPanel(item, isGM) {
       </div>
     `;
     panel.appendChild(specialRow);
+  }
+
+  /* === EFFECTS === */
+  const effects = data.effects || [];
+  if (isGM || effects.length > 0) {
+    const effectsRow = document.createElement('div');
+    effectsRow.className = 'cci-row cci-effects-row';
+    effectsRow.innerHTML = `
+      <label>Effects <span class="cci-hint">(drop active effects here)</span></label>
+      <div class="cci-effects-dropzone" data-drop="effects">
+        ${effects.length > 0
+          ? effects.map((eff, idx) => `
+            <div class="cci-effect-item" data-effect-idx="${idx}" data-effect-id="${eff.id}">
+              <div class="cci-effect-header">
+                <span class="cci-effect-label">${eff.name}</span>
+                ${isGM ? `<button class="cci-remove-effect" data-idx="${idx}">×</button>` : ''}
+              </div>
+              <div class="cci-effect-fields">
+                <img src="${eff.img || 'icons/svg/aura.svg'}" alt="${eff.name}" class="cci-effect-icon">
+                ${isGM ? `
+                  <select class="cci-effect-target" data-idx="${idx}" title="Target">
+                    ${opts(CCI_CONFIG.effectTarget, eff.target || 'pc')}
+                  </select>
+                  <select class="cci-effect-trigger" data-idx="${idx}" title="Trigger">
+                    ${opts(CCI_CONFIG.effectTrigger, eff.trigger || 'automatic')}
+                  </select>
+                ` : `
+                  <span class="cci-effect-tag">${CCI_CONFIG.effectTarget[eff.target || 'pc']}</span>
+                  <span class="cci-effect-tag">${CCI_CONFIG.effectTrigger[eff.trigger || 'automatic']}</span>
+                `}
+              </div>
+              ${isGM ? `
+              <div class="cci-effect-resistance-row">
+                <span class="cci-effect-res-label">RESISTANCE</span>
+                <select class="cci-effect-resistance" data-idx="${idx}" title="Resistance Attribute">
+                  ${opts({might:'Might',speed:'Speed',intellect:'Intellect'}, eff.resistance?.attribute || 'might')}
+                </select>
+                <span class="cci-effect-res-label">DIFFICULTY</span>
+                <select class="cci-effect-res-difficulty" data-idx="${idx}" title="Resistance Difficulty">
+                  ${Array.from({length:15},(_,i)=>`<option value="${i+1}" ${(eff.resistance?.difficulty ?? 1) === i+1 ? 'selected' : ''}>${i+1}</option>`).join('')}
+                </select>
+              </div>
+              ` : ''}
+            </div>
+          `).join('')
+          : (isGM ? '<div class="cci-drop-hint">Drag active effects here</div>' : '')
+        }
+      </div>
+    `;
+    panel.appendChild(effectsRow);
   }
 
   /* === DESCRIPTION === */
@@ -322,6 +399,21 @@ function renderAbilityValues(abilityItem, isGM) {
    ================================ */
 
 export function bindAttackEvents(panel, item, isGM) {
+  // === DEFENSE ROLL CHECKBOXES ===
+  panel.querySelectorAll('[data-defense-roll]').forEach(cb => {
+    cb.addEventListener('change', async (e) => {
+      const key = e.target.dataset.defenseRoll;
+      const current = CoolItemData.get(item).defenseRoll || [];
+      const set = new Set(current);
+      if (e.target.checked) set.add(key);
+      else set.delete(key);
+      await CoolItemData.set(item, 'defenseRoll', Array.from(set));
+      // Toggle visual active state
+      const label = cb.closest('.cci-defense-roll-check');
+      if (label) label.classList.toggle('cci-checked', e.target.checked);
+    });
+  });
+
   // === ATTACK TYPE CHANGE ===
   const typeSelect = panel.querySelector('[data-prop="attackType"]');
   if (typeSelect) {
@@ -487,4 +579,173 @@ export function bindAttackEvents(panel, item, isGM) {
       });
     });
   }
+
+  // === EFFECTS DROPZONE ===
+  const effectsDropzone = panel.querySelector('.cci-effects-dropzone[data-drop="effects"]');
+  if (effectsDropzone && isGM) {
+    effectsDropzone.addEventListener('dragover', (e) => { e.preventDefault(); effectsDropzone.classList.add('cci-dragover'); });
+    effectsDropzone.addEventListener('dragleave', () => effectsDropzone.classList.remove('cci-dragover'));
+    effectsDropzone.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      effectsDropzone.classList.remove('cci-dragover');
+      let data;
+      try { data = JSON.parse(e.dataTransfer.getData('text/plain')); } catch { return; }
+      if (!data) return;
+
+      let effectDoc = null;
+      if (data.type === 'ActiveEffect') {
+        effectDoc = await fromUuid(data.uuid);
+      } else if (data.type === 'Item') {
+        // Also accept items that have effects (like from cypher-active-effects)
+        const droppedItem = await fromUuid(data.uuid);
+        if (droppedItem?.effects?.size > 0) {
+          effectDoc = droppedItem.effects.contents[0];
+        }
+      }
+
+      if (!effectDoc) {
+        ui.notifications.warn('Only Active Effects can be dropped here.');
+        return;
+      }
+
+      const existing = CoolItemData.get(item).effects || [];
+      if (existing.find(fx => fx.id === effectDoc.id)) return;
+
+      const desc = effectDoc.description || effectDoc.system?.description || '';
+      existing.push({
+        id: effectDoc.id,
+        name: effectDoc.name,
+        img: effectDoc.img || effectDoc.icon || 'icons/svg/aura.svg',
+        uuid: data.uuid,
+        description: desc,
+        target: 'pc',
+        trigger: 'automatic',
+        resistance: { attribute: 'might', difficulty: 1 }
+      });
+      await CoolItemData.set(item, 'effects', existing);
+      // Re-render effects row
+      const row = panel.querySelector('.cci-effects-row');
+      if (row) {
+        const newRow = buildEffectsRow(item, isGM);
+        row.replaceWith(newRow);
+      }
+      bindAttackEvents(panel, item, isGM);
+    });
+
+    // Remove effect
+    effectsDropzone.querySelectorAll('.cci-remove-effect').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.idx);
+        const existing = CoolItemData.get(item).effects || [];
+        existing.splice(idx, 1);
+        await CoolItemData.set(item, 'effects', existing);
+        const row = panel.querySelector('.cci-effects-row');
+        if (row) {
+          const newRow = buildEffectsRow(item, isGM);
+          row.replaceWith(newRow);
+        }
+        bindAttackEvents(panel, item, isGM);
+      });
+    });
+
+    // Effect target/trigger/resistance/difficulty change
+    effectsDropzone.querySelectorAll('.cci-effect-target, .cci-effect-trigger, .cci-effect-resistance, .cci-effect-res-difficulty').forEach(sel => {
+      sel.addEventListener('change', async (e) => {
+        const idx = parseInt(e.target.dataset.idx);
+        const existing = CoolItemData.get(item).effects || [];
+        if (!existing[idx]) return;
+        if (e.target.classList.contains('cci-effect-target')) {
+          existing[idx].target = e.target.value;
+        } else if (e.target.classList.contains('cci-effect-trigger')) {
+          existing[idx].trigger = e.target.value;
+        } else if (e.target.classList.contains('cci-effect-resistance')) {
+          existing[idx].resistance = existing[idx].resistance || {};
+          existing[idx].resistance.attribute = e.target.value;
+        } else if (e.target.classList.contains('cci-effect-res-difficulty')) {
+          existing[idx].resistance = existing[idx].resistance || {};
+          existing[idx].resistance.difficulty = parseInt(e.target.value, 10) || 1;
+        }
+        await CoolItemData.set(item, 'effects', existing);
+      });
+    });
+
+    // Effect icon tooltips
+    effectsDropzone.querySelectorAll('.cci-effect-icon').forEach(icon => {
+      const itemEl = icon.closest('.cci-effect-item');
+      const idx = parseInt(itemEl?.dataset.effectIdx);
+      const effects = CoolItemData.get(item).effects || [];
+      const fx = effects[idx];
+      if (!fx?.description) return;
+
+      const tt = document.createElement('div');
+      tt.className = 'cci-effect-tooltip';
+      tt.innerHTML = `
+        <div class="cci-effect-tt-header">${fx.name}</div>
+        <div class="cci-effect-tt-desc">${fx.description}</div>
+      `;
+      document.body.appendChild(tt);
+
+      const show = () => {
+        const rect = icon.getBoundingClientRect();
+        tt.style.left = rect.left + 'px';
+        tt.style.top = (rect.bottom + 6) + 'px';
+        tt.classList.add('cci-visible');
+      };
+      const hide = () => tt.classList.remove('cci-visible');
+
+      icon.addEventListener('mouseenter', show);
+      icon.addEventListener('mouseleave', hide);
+    });
+  }
+}
+
+export function buildEffectsRow(item, isGM) {
+  const data = CoolItemData.get(item);
+  const effects = data.effects || [];
+  const row = document.createElement('div');
+  row.className = 'cci-row cci-effects-row';
+  row.innerHTML = `
+    <label>Effects <span class="cci-hint">(drop active effects here)</span></label>
+    <div class="cci-effects-dropzone" data-drop="effects">
+      ${effects.length > 0
+        ? effects.map((eff, idx) => `
+          <div class="cci-effect-item" data-effect-idx="${idx}" data-effect-id="${eff.id}">
+            <div class="cci-effect-header">
+              <span class="cci-effect-label">${eff.name}</span>
+              ${isGM ? `<button class="cci-remove-effect" data-idx="${idx}">×</button>` : ''}
+            </div>
+            <div class="cci-effect-fields">
+              <img src="${eff.img || 'icons/svg/aura.svg'}" alt="${eff.name}" class="cci-effect-icon">
+              ${isGM ? `
+                <select class="cci-effect-target" data-idx="${idx}" title="Target">
+                  ${opts(CCI_CONFIG.effectTarget, eff.target || 'pc')}
+                </select>
+                <select class="cci-effect-trigger" data-idx="${idx}" title="Trigger">
+                  ${opts(CCI_CONFIG.effectTrigger, eff.trigger || 'automatic')}
+                </select>
+              ` : `
+                <span class="cci-effect-tag">${CCI_CONFIG.effectTarget[eff.target || 'pc']}</span>
+                <span class="cci-effect-tag">${CCI_CONFIG.effectTrigger[eff.trigger || 'automatic']}</span>
+              `}
+            </div>
+            ${isGM ? `
+            <div class="cci-effect-resistance-row">
+              <span class="cci-effect-res-label">RESISTANCE</span>
+              <select class="cci-effect-resistance" data-idx="${idx}" title="Resistance Attribute">
+                ${opts({might:'Might',speed:'Speed',intellect:'Intellect'}, eff.resistance?.attribute || 'might')}
+              </select>
+              <span class="cci-effect-res-label">DIFFICULTY</span>
+              <select class="cci-effect-res-difficulty" data-idx="${idx}" title="Resistance Difficulty">
+                ${Array.from({length:15},(_,i)=>`<option value="${i+1}" ${(eff.resistance?.difficulty ?? 1) === i+1 ? 'selected' : ''}>${i+1}</option>`).join('')}
+              </select>
+            </div>
+            ` : ''}
+          </div>
+        `).join('')
+        : (isGM ? '<div class="cci-drop-hint">Drag active effects here</div>' : '')
+      }
+    </div>
+  `;
+  return row;
 }

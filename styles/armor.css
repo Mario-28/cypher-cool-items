@@ -228,6 +228,21 @@
   padding: 4px 0;
 }
 
+/* === GM-ONLY FIELDS === */
+.cci-gm-only label {
+  color: #c084fc !important;
+  font-size: 0.72em !important;
+  letter-spacing: 0.06em;
+}
+.cci-gm-only input {
+  border-color: rgba(192, 132, 252, 0.35) !important;
+  background: rgba(192, 132, 252, 0.08) !important;
+}
+.cci-gm-only input:focus {
+  border-color: rgba(192, 132, 252, 0.6) !important;
+  box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.15) !important;
+}
+
 /* ============================================
    ARTIFACT PANEL — Purple Theme
    ============================================ */
