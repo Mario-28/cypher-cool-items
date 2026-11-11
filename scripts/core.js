@@ -37,7 +37,8 @@ export const CCI_CONFIG = {
   attackType: {
     ability: 'Ability',
     melee: 'Melee Weapon',
-    ranged: 'Ranged Weapon'
+    ranged: 'Ranged Weapon',
+    special: 'Special Attack'
   },
   range: {
     immediate: 'Immediate',
@@ -47,7 +48,7 @@ export const CCI_CONFIG = {
   },
   abilityType: {
     mundane: 'Mundane', martial: 'Martial', stealth: 'Stealth',
-    arcane: 'Arcane', divine: 'Divine', occult: 'Occult',
+    arcane: 'Arcane', arcaneSpell: 'Arcane Spell', divine: 'Divine', occult: 'Occult',
     psionic: 'Psionic', technological: 'Technological',
     alchemical: 'Alchemical', cybernetic: 'Cybernetic',
     biological: 'Biological', undead: 'Undead',
@@ -59,7 +60,8 @@ export const CCI_CONFIG = {
   durationUnit: {
     instant: 'Instant', round: 'Round', minute: 'Minute',
     hour: 'Hour', day: 'Day', week: 'Week',
-    month: 'Month', year: 'Year', permanent: 'Permanent'
+    month: 'Month', year: 'Year', permanent: 'Permanent',
+    concentration: 'Concentration'
   },
   ammoType: {
     mundane: 'Mundane', magical: 'Magical', other: 'Other'
@@ -196,7 +198,7 @@ export class CoolItemData {
 }
 
 Hooks.once('init', () => {
-  console.log(`${MODULE_ID} | v2.0.14 initialized`);
+  console.log(`${MODULE_ID} | v2.0.66 initialized`);
   game.settings.register(MODULE_ID, 'lastWindowPosition', {
     name: 'Last Window Position',
     scope: 'client',
@@ -434,6 +436,8 @@ function buildGenericPanel(item, isGM) {
     `;
   }
   panel.appendChild(descRow);
+  const extDescRow = buildExtendedDescRow(item, isGM);
+  if (extDescRow) panel.appendChild(extDescRow);
 
   const flavorRow = document.createElement('div');
   flavorRow.className = 'cci-flavor-text';
@@ -451,6 +455,74 @@ function buildGenericPanel(item, isGM) {
   if (isGM || flavor) panel.appendChild(flavorRow);
 
   return panel;
+}
+
+/**
+ * v2.0.66 — Extended description, shared by every panel type.
+ * GM: a ghost toggle button under the description reveals a second
+ * WYSIWYG editor (saved on blur to the `extendedDescription` flag —
+ * custom field, no native mirror). Player: a small "More details"
+ * button appears after the description ONLY when extended content
+ * exists; expanded text is hidden by default.
+ * @param {Item} item
+ * @param {boolean} isGM
+ * @returns {HTMLElement|null}  null for players with nothing to show
+ */
+export function buildExtendedDescRow(item, isGM) {
+  const data = CoolItemData.get(item);
+  const ext = data.extendedDescription || '';
+
+  if (!isGM && !ext) return null;
+
+  const toolbar = `
+    <div class="cci-wysiwyg-toolbar">
+      <button type="button" data-cmd="bold" title="Bold"><i class="fas fa-bold"></i></button>
+      <button type="button" data-cmd="italic" title="Italic"><i class="fas fa-italic"></i></button>
+      <button type="button" data-cmd="underline" title="Underline"><i class="fas fa-underline"></i></button>
+      <button type="button" data-cmd="strikeThrough" title="Strikethrough"><i class="fas fa-strikethrough"></i></button>
+      <span class="cci-wysiwyg-sep"></span>
+      <button type="button" data-cmd="insertUnorderedList" title="Bullet List"><i class="fas fa-list-ul"></i></button>
+      <button type="button" data-cmd="insertOrderedList" title="Numbered List"><i class="fas fa-list-ol"></i></button>
+      <span class="cci-wysiwyg-sep"></span>
+      <button type="button" data-cmd="justifyLeft" title="Align Left"><i class="fas fa-align-left"></i></button>
+      <button type="button" data-cmd="justifyCenter" title="Align Center"><i class="fas fa-align-center"></i></button>
+      <button type="button" data-cmd="justifyRight" title="Align Right"><i class="fas fa-align-right"></i></button>
+    </div>`;
+
+  const row = document.createElement('div');
+  row.className = 'cci-row cci-extdesc-row';
+
+  if (isGM) {
+    row.innerHTML = `
+      <button type="button" class="cci-extdesc-toggle">
+        <i class="fas fa-chevron-down cci-ext-caret"></i>
+        <span>${ext ? 'Edit extended description' : 'Add extended description'}</span>
+      </button>
+      <div class="cci-extdesc-editor" hidden>
+        ${toolbar}
+        <div class="cci-wysiwyg cci-ext-wysiwyg" contenteditable="true" data-prop="extendedDescription">${ext}</div>
+      </div>
+    `;
+  } else {
+    row.innerHTML = `
+      <button type="button" class="cci-extdesc-toggle cci-extdesc-more">
+        <i class="fas fa-ellipsis"></i>
+        <span>More details</span>
+      </button>
+      <div class="cci-extended-render" hidden>${ext}</div>
+    `;
+  }
+
+  const btn = row.querySelector('.cci-extdesc-toggle');
+  const body = row.querySelector('.cci-extdesc-editor, .cci-extended-render');
+  if (btn && body) {
+    btn.addEventListener('click', () => {
+      const open = body.hidden;
+      body.hidden = !open;
+      row.classList.toggle('cci-ext-open', open);
+    });
+  }
+  return row;
 }
 
 export function buildSpecialRow(item, isGM) {
@@ -500,7 +572,7 @@ function bindCommonEvents(panel, item, isGM) {
     input.addEventListener('change', async (e) => {
       if (input.dataset.prop) {
         let val = e.target.value;
-        if (e.target.type === 'number' || ['poolCost','armorRating','armorPenalty','level','price','durability','durationValue'].includes(e.target.dataset.prop)) {
+        if (e.target.type === 'number' || ['poolCost','armorRating','armorPenalty','level','price','durability','durationValue','cooldownTurns','armorReduction'].includes(e.target.dataset.prop)) {
           val = Number(val);
           if (isNaN(val)) val = 0;
         }
@@ -568,6 +640,25 @@ function bindCommonEvents(panel, item, isGM) {
           }
         }
 
+        // === ABILITY SYNC: Pool Cost → native Point Cost + Pool ===
+        if (item.type === 'ability' && (input.dataset.prop === 'poolCost' || input.dataset.prop === 'poolCostPool')) {
+          const abilityData = CoolItemData.get(item);
+          const costNum = Number(abilityData.poolCost ?? 0) || 0;
+          // Native ability pool select only knows Might/Speed/Intellect/Pool(any)/XP.
+          // CCI's exotic options fall back to the generic "Pool" (any pool) label;
+          // the CCI panel stays the source of truth for effort/none.
+          const POOL_TO_NATIVE = { might: 'Might', speed: 'Speed', intellect: 'Intellect', xp: 'XP', effort: 'Pool', none: 'Pool' };
+          const nativePool = POOL_TO_NATIVE[abilityData.poolCostPool] || 'Pool';
+          const abilityUpdates = { 'system.basic.cost': costNum, 'system.basic.pool': nativePool };
+          try {
+            await item.update(abilityUpdates, { render: false });
+            updateNativeForm(panel, abilityUpdates);
+            if (item.actor?.sheet?.rendered) item.actor.sheet.render(false);
+          } catch (err) {
+            console.error('[CCI] Ability pool cost sync failed:', err);
+          }
+        }
+
         // === ATTACK SYNC: Level / Damage / AttackBonus → native fields ===
         if (item.type === 'attack') {
           const attackUpdates = {};
@@ -620,6 +711,16 @@ function bindCommonEvents(panel, item, isGM) {
           console.error('[CCI] Skill description sync failed:', err);
         }
       }
+    });
+  }
+
+  // === WYSIWYG EXTENDED DESCRIPTION (v2.0.66) ===
+  // Custom flag field only — the native Cypher sheet has no equivalent,
+  // so no system.* mirror. Saved on blur like the main description.
+  const extWysiwyg = panel.querySelector('.cci-wysiwyg[data-prop="extendedDescription"]');
+  if (extWysiwyg) {
+    extWysiwyg.addEventListener('blur', async () => {
+      await CoolItemData.set(item, 'extendedDescription', extWysiwyg.innerHTML);
     });
   }
 

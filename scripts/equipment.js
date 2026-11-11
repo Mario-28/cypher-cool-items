@@ -1,4 +1,4 @@
-import { opts, CCI_CONFIG, CoolItemData } from './core.js';
+import { opts, buildExtendedDescRow, CCI_CONFIG, CoolItemData } from './core.js';
 
 export function buildEquipmentPanel(item, isGM) {
   const data = CoolItemData.get(item);
@@ -140,6 +140,8 @@ export function buildEquipmentPanel(item, isGM) {
     `;
   }
   panel.appendChild(descRow);
+  const extDescRow = buildExtendedDescRow(item, isGM);
+  if (extDescRow) panel.appendChild(extDescRow);
 
   // === FLAVOR ROW ===
   const flavorRow = document.createElement('div');

@@ -4,7 +4,125 @@
  */
 
 import { CoolItemData, CCI_CONFIG, MODULE_ID } from './core.js';
-import { buildSpecialRow, opts } from './core.js';
+import { buildSpecialRow, buildExtendedDescRow, opts } from './core.js';
+
+/* === ATTACK EXTRAS — shared by attack items AND attack-mode abilities ===
+   ATTACK ROLL (attribute pool multiselect + ease/hindrance) and
+   ARMOR REDUCTION (0-5 dropdown). renderAttackExtrasRows() appends both
+   rows to `parent`; bindAttackExtras() wires their change handlers. */
+export function renderAttackExtrasRows(parent, data, isGM) {
+  const attackRoll = data.attackRoll || [];
+  const attackEase = data.attackEase || { direction: 'eased', value: 0 };
+  const atkPoolOpts = [
+    { key: 'might', label: 'Might', icon: 'fa-fist-raised' },
+    { key: 'speed', label: 'Speed', icon: 'fa-running' },
+    { key: 'intellect', label: 'Intellect', icon: 'fa-brain' }
+  ];
+  const attackRollRow = document.createElement('div');
+  attackRollRow.className = 'cci-row cci-attack-roll-row';
+  if (isGM) {
+    attackRollRow.innerHTML = `
+      <label><i class="fas fa-sword"></i> Attack Roll <span class="cci-hint">(attribute pool)</span></label>
+      <div class="cci-attack-roll-controls">
+        <div class="cci-defense-roll-checkboxes">
+          ${atkPoolOpts.map(o => `
+            <label class="cci-defense-roll-check ${attackRoll.includes(o.key) ? 'cci-checked' : ''}" data-key="${o.key}">
+              <input type="checkbox" data-attack-roll="${o.key}" ${attackRoll.includes(o.key) ? 'checked' : ''}>
+              <span class="cci-defense-roll-icon"><i class="fas ${o.icon}"></i></span>
+              <span class="cci-defense-roll-label">${o.label}</span>
+            </label>
+          `).join('')}
+        </div>
+        <div class="cci-attack-ease-group" title="Ease / Hindrance applied when rolling this attack">
+          <select data-attack-ease-dir>
+            <option value="eased" ${attackEase.direction !== 'hindered' ? 'selected' : ''}>Eased</option>
+            <option value="hindered" ${attackEase.direction === 'hindered' ? 'selected' : ''}>Hindered</option>
+          </select>
+          <select data-attack-ease-val>
+            ${[0, 1, 2].map(v => `<option value="${v}" ${(attackEase.value ?? 0) === v ? 'selected' : ''}>${v === 0 ? '0 – none' : v}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    `;
+  } else {
+    const chips = attackRoll.length
+      ? attackRoll.map(p => {
+          const o = atkPoolOpts.find(x => x.key === p);
+          return `<span class="cci-attack-roll-chip"><i class="fas ${o?.icon ?? 'fa-dice-d20'}"></i> ${o?.label ?? p}</span>`;
+        }).join('')
+      : '<div class="cci-readonly">—</div>';
+    const easeTxt = (attackEase.value ?? 0) > 0
+      ? `<span class="cci-attack-roll-chip cci-attack-roll-ease"><i class="fas ${attackEase.direction === 'hindered' ? 'fa-arrow-up' : 'fa-arrow-down'}"></i> ${attackEase.direction === 'hindered' ? 'Hindered' : 'Eased'} ${attackEase.value}</span>`
+      : '';
+    attackRollRow.innerHTML = `
+      <label><i class="fas fa-sword"></i> Attack Roll</label>
+      <div class="cci-attack-roll-controls">
+        <div class="cci-attack-roll-readonly-chips">${chips}${easeTxt}</div>
+      </div>
+    `;
+  }
+  parent.appendChild(attackRollRow);
+
+  const armorReduction = Number(data.armorReduction ?? 0) || 0;
+  const armorRedRow = document.createElement('div');
+  armorRedRow.className = 'cci-row cci-armor-reduction-row';
+  if (isGM) {
+    armorRedRow.innerHTML = `
+      <label><i class="fas fa-shield-halved"></i> Armor Reduction <span class="cci-hint">(ignores N points of target armor)</span></label>
+      <div class="cci-armor-reduction-controls">
+        <select data-armor-reduction>
+          ${[0, 1, 2, 3, 4, 5].map(v => `<option value="${v}" ${armorReduction === v ? 'selected' : ''}>${v === 0 ? '0 – none' : v}</option>`).join('')}
+        </select>
+      </div>
+    `;
+  } else {
+    armorRedRow.innerHTML = `
+      <label><i class="fas fa-shield-halved"></i> Armor Reduction</label>
+      <div class="cci-armor-reduction-controls">
+        ${armorReduction > 0
+          ? `<span class="cci-attack-roll-chip cci-armor-reduction-chip"><i class="fas fa-shield-halved"></i> Ignores ${armorReduction} armor</span>`
+          : '<div class="cci-readonly">—</div>'}
+      </div>
+    `;
+  }
+  parent.appendChild(armorRedRow);
+}
+
+export function bindAttackExtras(panel, item) {
+  // === ATTACK ROLL CHECKBOXES ===
+  panel.querySelectorAll('[data-attack-roll]').forEach(cb => {
+    cb.addEventListener('change', async (e) => {
+      const key = e.target.dataset.attackRoll;
+      const current = CoolItemData.get(item).attackRoll || [];
+      const set = new Set(current);
+      if (e.target.checked) set.add(key);
+      else set.delete(key);
+      await CoolItemData.set(item, 'attackRoll', Array.from(set));
+      // Toggle visual active state
+      const label = cb.closest('.cci-defense-roll-check');
+      if (label) label.classList.toggle('cci-checked', e.target.checked);
+    });
+  });
+
+  // === ATTACK EASE / HINDRANCE PRESET ===
+  panel.querySelectorAll('[data-attack-ease-dir], [data-attack-ease-val]').forEach(sel => {
+    sel.addEventListener('change', async () => {
+      const dirSel = panel.querySelector('[data-attack-ease-dir]');
+      const valSel = panel.querySelector('[data-attack-ease-val]');
+      await CoolItemData.set(item, 'attackEase', {
+        direction: dirSel?.value === 'hindered' ? 'hindered' : 'eased',
+        value: parseInt(valSel?.value ?? '0', 10) || 0
+      });
+    });
+  });
+
+  // === ARMOR REDUCTION (0-5 dropdown) ===
+  panel.querySelectorAll('[data-armor-reduction]').forEach(sel => {
+    sel.addEventListener('change', async (e) => {
+      await CoolItemData.set(item, 'armorReduction', parseInt(e.target.value, 10) || 0);
+    });
+  });
+}
 
 export function buildAttackPanel(item, isGM) {
   const data = CoolItemData.get(item);
@@ -28,6 +146,9 @@ export function buildAttackPanel(item, isGM) {
   const ammoEnabled = data.ammoEnabled || false;
   const ammoItem = data.ammoItem || null;
   const abilityItem = data.abilityItem || null;
+  const cooldownEnabled = data.cooldownEnabled || false;
+  const cooldownTurns = data.cooldownTurns ?? 1;
+  const cooldownRemaining = data.cooldownRemaining ?? 0;
 
   const panel = document.createElement('div');
   panel.className = 'cci-cool-panel cci-attack-panel';
@@ -230,6 +351,10 @@ export function buildAttackPanel(item, isGM) {
 
   panel.appendChild(attackSection);
 
+  /* === ATTACK ROLL + ARMOR REDUCTION (shared with attack-mode abilities) === */
+  renderAttackExtrasRows(panel, data, isGM);
+
+
   /* === DEFENSE ROLL (GM only) === */
   const defenseRoll = data.defenseRoll || [];
   if (isGM) {
@@ -255,6 +380,44 @@ export function buildAttackPanel(item, isGM) {
       </div>
     `;
     panel.appendChild(defenseRollRow);
+  }
+
+  /* === COOLDOWN (GM + player status) — SPECIAL ATTACK type only ===
+     Always rendered; hidden via CSS unless attackType === 'special',
+     so the type-change toggle works without a re-render. === */
+  {
+    const cooldownRow = document.createElement('div');
+    cooldownRow.className = `cci-row cci-cooldown-row ${attackType === 'special' ? '' : 'cci-hidden'}`;
+  if (isGM) {
+    cooldownRow.innerHTML = `
+      <label><i class="fas fa-hourglass-half"></i> Cooldown</label>
+      <div class="cci-cooldown-controls">
+        <label class="cci-cooldown-check ${cooldownEnabled ? 'cci-checked' : ''}">
+          <input type="checkbox" data-cooldown-enabled ${cooldownEnabled ? 'checked' : ''}>
+          <span class="cci-cooldown-check-label">Enable</span>
+        </label>
+        <div class="cci-cooldown-turns ${cooldownEnabled ? '' : 'cci-hidden'}">
+          <span class="cci-cooldown-turns-label">Turns</span>
+          <input type="number" data-prop="cooldownTurns" value="${cooldownTurns}" min="1" max="99">
+          <button type="button" class="cci-cooldown-reset" title="Reset cooldown now" ${cooldownRemaining > 0 ? '' : 'disabled'}>
+            <i class="fas fa-rotate-left"></i>
+          </button>
+        </div>
+      </div>
+      ${cooldownRemaining > 0
+        ? `<div class="cci-cooldown-status">Recharging — ${cooldownRemaining} turn(s) left</div>`
+        : (cooldownEnabled ? '<div class="cci-cooldown-status cci-cooldown-ready">Ready</div>' : '')}
+    `;
+  } else {
+    cooldownRow.innerHTML = `
+      <label><i class="fas fa-hourglass-half"></i> Cooldown</label>
+      <div class="cci-cooldown-controls">
+        <div class="cci-readonly">${cooldownEnabled ? `${cooldownTurns} turn(s)` : '—'}</div>
+      </div>
+      ${cooldownRemaining > 0 ? `<div class="cci-cooldown-status">Recharging — ${cooldownRemaining} turn(s) left</div>` : ''}
+    `;
+  }
+    panel.appendChild(cooldownRow);
   }
 
   /* === SPECIAL ABILITIES === */
@@ -357,6 +520,8 @@ export function buildAttackPanel(item, isGM) {
     `;
   }
   panel.appendChild(descRow);
+  const extDescRow = buildExtendedDescRow(item, isGM);
+  if (extDescRow) panel.appendChild(extDescRow);
 
   /* === FLAVOR === */
   const flavorRow = document.createElement('div');
@@ -399,6 +564,40 @@ function renderAbilityValues(abilityItem, isGM) {
    ================================ */
 
 export function bindAttackEvents(panel, item, isGM) {
+  // === COOLDOWN ENABLE ===
+  const cdCheckbox = panel.querySelector('[data-cooldown-enabled]');
+  if (cdCheckbox) {
+    cdCheckbox.addEventListener('change', async (e) => {
+      const enabled = e.target.checked;
+      await CoolItemData.set(item, 'cooldownEnabled', enabled);
+      if (!enabled) await CoolItemData.set(item, 'cooldownRemaining', 0);
+      // Toggle visual active state
+      const label = cdCheckbox.closest('.cci-cooldown-check');
+      if (label) label.classList.toggle('cci-checked', enabled);
+      // Show/hide the turns input without a full re-render
+      const turnsWrap = panel.querySelector('.cci-cooldown-turns');
+      if (turnsWrap) turnsWrap.classList.toggle('cci-hidden', !enabled);
+    });
+  }
+
+  // === COOLDOWN RESET (GM) ===
+  const cdReset = panel.querySelector('.cci-cooldown-reset');
+  if (cdReset) {
+    cdReset.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await CoolItemData.set(item, 'cooldownRemaining', 0);
+      const status = panel.querySelector('.cci-cooldown-status');
+      if (status) {
+        status.classList.add('cci-cooldown-ready');
+        status.textContent = 'Ready';
+      }
+      cdReset.disabled = true;
+      ui.notifications.info(`"${item.name}" cooldown reset.`);
+    });
+  }
+
+  bindAttackExtras(panel, item);
+
   // === DEFENSE ROLL CHECKBOXES ===
   panel.querySelectorAll('[data-defense-roll]').forEach(cb => {
     cb.addEventListener('change', async (e) => {
@@ -424,6 +623,9 @@ export function bindAttackEvents(panel, item, isGM) {
       panel.querySelector('.cci-attack-ability-section').classList.toggle('cci-hidden', newType !== 'ability');
       panel.querySelector('.cci-attack-melee-section').classList.toggle('cci-hidden', newType !== 'melee');
       panel.querySelector('.cci-attack-ranged-section').classList.toggle('cci-hidden', newType !== 'ranged');
+      // COOLDOWN is exclusive to the Special Attack type
+      const cooldownRow = panel.querySelector('.cci-cooldown-row');
+      if (cooldownRow) cooldownRow.classList.toggle('cci-hidden', newType !== 'special');
     });
   }
 
@@ -699,6 +901,62 @@ export function bindAttackEvents(panel, item, isGM) {
     });
   }
 }
+
+/* ================================
+   COOLDOWN — combat countdown
+   ================================ */
+
+/**
+ * Start a cooldown on an attack item — call when the attack is used.
+ * Sets cooldownRemaining = configured turns. No-op when disabled.
+ * @param {Item} item
+ * @returns {Promise<boolean>} true if a cooldown was started
+ */
+export async function triggerAttackCooldown(item) {
+  if (!item || item.type !== 'attack') return false;
+  const data = CoolItemData.get(item);
+  if (!data.cooldownEnabled) return false;
+  const turns = Math.max(1, Number(data.cooldownTurns) || 1);
+  await CoolItemData.set(item, 'cooldownRemaining', turns);
+  return true;
+}
+
+// Other modules (e.g. cypher-npc token HUD) signal attack usage via this hook
+Hooks.on('cciAttackUsed', (item) => { triggerAttackCooldown(item); });
+
+/**
+ * Combat countdown — the active GM client ticks cooldownRemaining down by 1
+ * for attack items on the actor whose combat turn just ended. Reaching 0
+ * means the attack can be used again.
+ */
+Hooks.on('updateCombat', async (combat, changed) => {
+  const gm = game.users.activeGM;
+  if (!gm || game.user.id !== gm.id) return;
+  if (!combat.started) return;
+  if (changed.turn === undefined && changed.round === undefined) return;
+  // Combat just starting (round 1, turn 0) — no turn has ended yet
+  if (combat.round === 1 && combat.turn === 0) return;
+
+  const turns = combat.turns;
+  if (!turns?.length) return;
+
+  // The combatant whose turn just ended
+  const prevIndex = combat.turn > 0 ? combat.turn - 1 : turns.length - 1;
+  const actor = turns[prevIndex]?.actor;
+  if (!actor) return;
+
+  const attacks = actor.items.filter(i => i.type === 'attack');
+  for (const atk of attacks) {
+    const data = CoolItemData.get(atk);
+    if (!data.cooldownEnabled) continue;
+    const remaining = Number(data.cooldownRemaining) || 0;
+    if (remaining <= 0) continue;
+    const next = remaining - 1;
+    await CoolItemData.set(atk, 'cooldownRemaining', next);
+    if (next === 0) ui.notifications.info(`"${atk.name}" is ready again.`);
+    if (atk.sheet?.rendered) atk.sheet.render(false);
+  }
+});
 
 export function buildEffectsRow(item, isGM) {
   const data = CoolItemData.get(item);

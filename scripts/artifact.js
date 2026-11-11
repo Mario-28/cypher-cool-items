@@ -1,4 +1,4 @@
-import { buildSpecialRow, opts, CCI_CONFIG, CoolItemData } from './core.js';
+import { buildSpecialRow, buildExtendedDescRow, opts, CCI_CONFIG, CoolItemData } from './core.js';
 
 function injectArtifactStyles() {
   if (document.getElementById('cci-artifact-dynamic-styles')) return;
@@ -216,6 +216,8 @@ export function buildArtifactPanel(item, isGM) {
     `;
   }
   panel.appendChild(descRow);
+  const extDescRow = buildExtendedDescRow(item, isGM);
+  if (extDescRow) panel.appendChild(extDescRow);
 
   const flavorRow = document.createElement('div');
   flavorRow.className = 'cci-flavor-text';

@@ -751,7 +751,7 @@
   min-height: 180px;
   max-height: 400px;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: clip;
   outline: none;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -784,7 +784,7 @@
   line-height: 1.45;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .cci-description-render p { margin: 0 0 8px 0; }
@@ -890,4 +890,70 @@
 
 .cci-ability-panel .cci-defense-roll-check.cci-checked .cci-defense-roll-label {
   color: #60a5fa;
+}
+
+/* ============================================
+   ARCANE SPELL — silver sweep + SPELL label
+   Reference: Arcane's shimmer — one cold band of
+   light crossing the card when it opens.
+   ============================================ */
+/* The clip wrapper owns the overflow:hidden — panel keeps its own scrollbars. */
+.cci-ability-panel.cci-spell-card {
+  position: relative;
+}
+.cci-ability-panel .cci-spell-sheen-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* One-shot silver band: enters skewed from the left, crosses, exits right. */
+.cci-ability-panel .cci-spell-sheen {
+  position: absolute;
+  top: -60%;
+  bottom: -60%;
+  left: 0;
+  width: 42%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: linear-gradient(100deg,
+    rgba(210, 222, 248, 0) 0%,
+    rgba(222, 232, 255, 0.22) 32%,
+    rgba(246, 250, 255, 0.8) 50%,
+    rgba(222, 232, 255, 0.22) 68%,
+    rgba(210, 222, 248, 0) 100%);
+  transform: translateX(-160%) skewX(-14deg);
+  animation: cci-spell-sheen 1.5s cubic-bezier(0.32, 0.6, 0.42, 1) 0.3s 1 forwards;
+}
+@keyframes cci-spell-sheen {
+  to { transform: translateX(340%) skewX(-14deg); }
+}
+
+/* SPELL label under the item title */
+.cci-ability-panel .cci-spell-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 8px;
+  padding: 3px 12px 3px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: #e6ecfb;
+  background: linear-gradient(90deg,
+    rgba(148, 163, 184, 0.16) 0%,
+    rgba(203, 213, 225, 0.38) 50%,
+    rgba(148, 163, 184, 0.16) 100%);
+  border: 1px solid rgba(203, 213, 225, 0.45);
+  box-shadow:
+    0 0 14px rgba(178, 198, 240, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  text-shadow: 0 0 8px rgba(200, 215, 255, 0.85);
+}
+.cci-ability-panel .cci-spell-label i {
+  font-size: 9px;
+  color: #cdd9f2;
 }

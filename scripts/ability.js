@@ -1,4 +1,5 @@
-import { buildSpecialRow, opts, CCI_CONFIG, CoolItemData } from './core.js';
+import { buildSpecialRow, buildExtendedDescRow, opts, CCI_CONFIG, CoolItemData } from './core.js';
+import { renderAttackExtrasRows, bindAttackExtras } from './attack.js';
 
 const RANGE_OPTIONS = {
   immediate: 'Immediate',
@@ -30,6 +31,11 @@ export function buildAbilityPanel(item, isGM) {
   const defense = data.defense || false;
   const utility = data.utility || false;
 
+  // Cast behavior: when unchecked the spell is automatic — only pool points
+  // are spent, no roll against difficulty. Default true (roll) for backward
+  // compatibility with existing spells.
+  const rollForCast = data.rollForCast ?? true;
+
   // Attack data
   const attackBonus = data.attackBonus ?? '';
   const damage = data.damage || '';
@@ -46,6 +52,19 @@ export function buildAbilityPanel(item, isGM) {
   const panel = document.createElement('div');
   panel.className = 'cci-cool-panel cci-ability-panel';
   if (!isGM) panel.classList.add('cci-player-view');
+  // Arcane Spell abilities are treated as spells: silver sweep + SPELL label.
+  const isSpell = abilityType === 'arcaneSpell';
+  if (isSpell) {
+    panel.classList.add('cci-spell-card');
+    // Wrapper clips the sweep to the card bounds WITHOUT touching the panel's
+    // own overflow (the panel must keep overflow-y: auto for its scrollbar).
+    const sheenClip = document.createElement('div');
+    sheenClip.className = 'cci-spell-sheen-clip';
+    const sheen = document.createElement('div');
+    sheen.className = 'cci-spell-sheen';
+    sheenClip.appendChild(sheen);
+    panel.appendChild(sheenClip);
+  }
 
   const bgImg = document.createElement('div');
   bgImg.className = 'cci-bg-image';
@@ -65,6 +84,7 @@ export function buildAbilityPanel(item, isGM) {
         ? `<input type="text" name="name" value="${escapeHtml(item.name)}" class="cci-name-input" placeholder="Ability Name">`
         : `<div class="cci-name-display">${escapeHtml(item.name)}</div>`
       }
+      ${isSpell ? `<div class="cci-spell-label" title="This ability is a spell"><i class="fas fa-wand-magic-sparkles"></i> SPELL</div>` : ''}
       <div class="cci-info-fields">
         <div class="cci-field-pair">
           <label>Type</label>
@@ -148,6 +168,20 @@ export function buildAbilityPanel(item, isGM) {
   `;
   panel.appendChild(modeRow);
 
+  // === CAST ROW: roll-for-cast toggle (always visible) ===
+  const castRow = document.createElement('div');
+  castRow.className = 'cci-row cci-cast-row';
+  castRow.innerHTML = `
+    <label class="cci-ammo-toggle" title="${rollForCast ? 'Casting requires a roll against difficulty' : 'Automatic cast — only pool points are spent, no roll'}">
+      <input type="checkbox" data-roll-cast-toggle ${rollForCast ? 'checked' : ''} ${!isGM ? 'disabled' : ''}>
+      <span class="cci-ammo-toggle-track">
+        <span class="cci-ammo-toggle-thumb"></span>
+      </span>
+      <span class="cci-ammo-toggle-label">Roll for Cast</span>
+    </label>
+  `;
+  panel.appendChild(castRow);
+
   // === ATTACK SECTION (always rendered, toggled via CSS) ===
   const attackSection = document.createElement('div');
   attackSection.className = 'cci-row cci-attack-section';
@@ -207,6 +241,15 @@ export function buildAbilityPanel(item, isGM) {
     </div>
   `;
   panel.appendChild(attackSection);
+
+  // Attack-mode extras — ATTACK ROLL (attribute pool + ease) and ARMOR REDUCTION.
+  // Mounted INSIDE the Attack section so the mode toggle hides/shows them.
+  if (attack) {
+    const extrasWrap = document.createElement('div');
+    extrasWrap.className = 'cci-attack-extras';
+    attackSection.appendChild(extrasWrap);
+    renderAttackExtrasRows(extrasWrap, data, isGM);
+  }
 
   // === DEFENSE SECTION (always rendered, toggled via CSS) ===
   const defenseSection = document.createElement('div');
@@ -358,6 +401,8 @@ export function buildAbilityPanel(item, isGM) {
     `;
   }
   panel.appendChild(descRow);
+  const extDescRow = buildExtendedDescRow(item, isGM);
+  if (extDescRow) panel.appendChild(extDescRow);
 
   const flavorRow = document.createElement('div');
   flavorRow.className = 'cci-flavor-text';
@@ -379,6 +424,9 @@ export function buildAbilityPanel(item, isGM) {
 
 export function bindAbilityEvents(panel, item, isGM) {
   if (!isGM) return;
+
+  // Attack-mode extras — Attack Roll pool checkboxes, ease preset, armor reduction
+  bindAttackExtras(panel, item);
 
   // === DEFENSE ROLL CHECKBOXES ===
   panel.querySelectorAll('[data-defense-roll]').forEach(cb => {
@@ -446,6 +494,17 @@ export function bindAbilityEvents(panel, item, isGM) {
       if (dropzone) {
         dropzone.classList.toggle('cci-hidden', !isChecked);
       }
+    });
+  }
+
+  // Roll-for-cast toggle — automatic spells skip the difficulty roll
+  const rollCastCb = panel.querySelector('[data-roll-cast-toggle]');
+  if (rollCastCb) {
+    rollCastCb.addEventListener('change', async (e) => {
+      const isChecked = e.target.checked;
+      await CoolItemData.set(item, 'rollForCast', isChecked);
+      const label = rollCastCb.closest('.cci-ammo-toggle');
+      if (label) label.title = isChecked ? 'Casting requires a roll against difficulty' : 'Automatic cast — only pool points are spent, no roll';
     });
   }
 

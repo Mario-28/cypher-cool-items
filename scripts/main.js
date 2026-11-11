@@ -13,6 +13,7 @@ import { buildAttackPanel, bindAttackEvents } from './attack.js';
 import { buildCypherPanel, bindCypherEvents } from './cypher.js';
 import { buildEquipmentPanel, bindEquipmentEvents } from './equipment.js';
 import { buildSkillPanel, bindSkillEvents } from './skill.js';
+import { registerAutoAnimations } from './autoanimations.js';
 
 // Register panel builders
 registerBuilder('ability', buildAbilityPanel);
@@ -34,4 +35,6 @@ registerBinder('cypher', bindCypherEvents);
 registerBinder('equipment', bindEquipmentEvents);
 registerBinder('skill', bindSkillEvents);
 
-console.log(`${MODULE_ID} | v2.0.15 modular system loaded.`);
+registerAutoAnimations();
+
+console.log(`${MODULE_ID} | v2.0.66 modular system loaded.`);

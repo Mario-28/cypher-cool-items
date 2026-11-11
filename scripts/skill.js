@@ -1,4 +1,4 @@
-import { opts, CCI_CONFIG, CoolItemData } from './core.js';
+import { opts, buildExtendedDescRow, CCI_CONFIG, CoolItemData } from './core.js';
 
 /* ═══════════════════════════════════════════════════════════════
    Skill Training ↔ Cypher System Rating Mapping
@@ -185,6 +185,8 @@ export function buildSkillPanel(item, isGM) {
     `;
   }
   panel.appendChild(descRow);
+  const extDescRow = buildExtendedDescRow(item, isGM);
+  if (extDescRow) panel.appendChild(extDescRow);
 
   // === FLAVOR ROW ===
   const flavorRow = document.createElement('div');

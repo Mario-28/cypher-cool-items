@@ -1,4 +1,4 @@
-import { buildSpecialRow, opts, CCI_CONFIG, CoolItemData } from './core.js';
+import { buildSpecialRow, buildExtendedDescRow, opts, CCI_CONFIG, CoolItemData } from './core.js';
 
 export function buildArmorPanel(item, isGM) {
   const data = CoolItemData.get(item);
@@ -196,6 +196,8 @@ export function buildArmorPanel(item, isGM) {
     `;
   }
   panel.appendChild(descRow);
+  const extDescRow = buildExtendedDescRow(item, isGM);
+  if (extDescRow) panel.appendChild(extDescRow);
 
   const flavorRow = document.createElement('div');
   flavorRow.className = 'cci-flavor-text';

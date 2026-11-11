@@ -1,4 +1,4 @@
-import { opts, CCI_CONFIG, CoolItemData } from './core.js';
+import { opts, buildExtendedDescRow, CCI_CONFIG, CoolItemData } from './core.js';
 
 export function buildCypherPanel(item, isGM) {
   const data = CoolItemData.get(item);
@@ -163,6 +163,8 @@ export function buildCypherPanel(item, isGM) {
     `;
   }
   panel.appendChild(descRow);
+  const extDescRow = buildExtendedDescRow(item, isGM);
+  if (extDescRow) panel.appendChild(extDescRow);
 
   // === FLAVOR ROW ===
   const flavorRow = document.createElement('div');
